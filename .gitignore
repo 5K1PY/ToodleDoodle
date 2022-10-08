@@ -1,0 +1,4 @@
+todo
+*.pyc
+database.db
+database.db-journal

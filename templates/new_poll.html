@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} New poll {% endblock %}</h1>
+
+    {% if form.error_message %}
+    <div class="alert alert-danger" role="alert"> {{form.error_message}} </div>
+    {% endif %}
+
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{form.poll_title.label}}
+            {{form.poll_title(
+                placeholder="Poll title",
+                class_="form-control",
+                value=request.form['poll_title'])
+            }}
+        </div>
+
+        <div id="options" data-toggle="options" class="">
+        {{form.options.label}}
+        {% for option in form.options %}
+            <div id="options-{{loop.index-1}}" class="row options-entry">
+                <div class="col"> {{option.day(class_="form-control")}} </div>
+                <div class="col"> {{option.mode(class_="form-control mode")}} </div>
+                <div class="col"> {{option.time1(class_="form-control")}} </div>
+                <div class="col"> {{option.time2(class_="form-control")}} </div>
+            </div>
+            
+        {% endfor %}
+        </div>
+
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary" id="add-row" data-target="#options">+</button>
+            <button type="button" class="btn btn-primary" id="remove-row" data-target="#options" disabled>-</button>
+        </div>
+        <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+    </form>
+
+{% endblock %}
