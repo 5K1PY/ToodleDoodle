@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{poll.name}}</h1>
+    <div class="overflow-scroll">
+    <table class="table">
+        <thead>
+            <th style="min-width: 150px;">Name</th>
+            {% for option in poll.options %}
+                {% if poll.diffrent_than_last(loop.index-1) %}
+                <th colspan="{{poll.next_year_and_month(loop.index-1)}}"> {{option.year_and_month()}} </th>
+                {% endif %}
+            {% endfor %}
+            <th></th>
+        </thead>
+        <thead>
+            <th></th>
+            {% for option in poll.options %}
+                <th style="min-width: 90px;"> {{option.day_and_time()}} </th>
+            {% endfor %}
+            <th></th>
+        </thead>
+        <tr>
+            <form method="post">    
+            {{ form.hidden_tag() }}
+            <td>{{form.name(
+                placeholder="Your name",
+                class_="form-control")
+            }}</td>
+            
+            {% for option in form.options %}
+            <td>{{option(class_="form-control")}}</td>
+            {% endfor %}
+
+            <td>{{form.submit(class_="btn btn-primary")}}</td>
+            </form>
+        </tr>
+        {% for row in poll.rows %}
+        <tr>
+            {% for cell in row %}
+            <td style="text-align: center">
+                {{cell}}
+            </td>
+            {% endfor %}
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}

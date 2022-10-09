@@ -2,8 +2,8 @@ import datetime
 from flask import Flask, render_template, redirect
 from werkzeug.exceptions import abort
 
-from form import PollForm
-from db import make_poll, poll_exists
+from form import CreationForm, PollForm
+from db import make_poll, poll_exists, read_poll, write_poll
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sosecret'
@@ -52,19 +52,34 @@ def index():
 
 @app.route('/new_poll', methods=['GET', 'POST'])
 def new_poll():
-    form = PollForm()
+    form = CreationForm()
     if form.validate_on_submit():
-        poll_name = form.poll_title.data
+        poll_name = form.poll_title.data  
         poll_options = gen_options(form.options.data)
-        print(poll_name, poll_options)
+        secret = make_poll(poll_name, poll_options)
+        return redirect(f'/poll/{secret}')
 
     return render_template('new_poll.html', form=form)
 
-@app.route('/polls/<int:poll_id>')
+@app.route('/poll/<string:poll_id>', methods=['GET', 'POST'])
 def get_poll(poll_id):
     if not poll_exists(poll_id):
         abort(404)
-    return ""
+    poll=read_poll(poll_id)
+    form = PollForm()
+    if form.validate_on_submit():
+        write_poll(
+            form.name.data,
+            map(lambda x: x.option_id, poll.options),
+            form.options.data
+        )
+        poll=read_poll(poll_id)
+    
+    if len(form.options) == 0:
+        for i in range(len(poll.options)):
+            form.options.append_entry()
 
+    
+    return render_template('poll.html', poll=poll, form=form)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)

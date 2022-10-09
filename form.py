@@ -1,9 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, FieldList, FormField, IntegerField, SelectField, \
-        StringField, TextAreaField, SubmitField, DateField, EmailField, TimeField
+        StringField, BooleanField, SubmitField, DateField, EmailField, TimeField
 from wtforms import validators
 
-class Option(Form):
+from constants import AVAILABILTY
+
+class CreationOption(Form):
     day_mode = SelectField(
         'DayMode',
         choices=["One day", "Range of days"]
@@ -42,14 +44,14 @@ class Option(Form):
         validators=[validators.Optional()]
     )
 
-class PollForm(FlaskForm):
+class CreationForm(FlaskForm):
     poll_title = StringField(
         'Poll title',
         validators=[validators.InputRequired(), validators.Length(max=100)]
     )
 
     options = FieldList(
-        FormField(Option),
+        FormField(CreationOption),
         'Options',
         min_entries=1,
         max_entries=100
@@ -97,3 +99,16 @@ class PollForm(FlaskForm):
         value = super().validate_on_submit(*args, **kwargs)
         self.error_message = self.errors
         return value
+
+class PollForm(FlaskForm):
+    name = StringField(
+        "Name",
+        [validators.InputRequired(), validators.Length(max=100)]
+    )
+
+    options = FieldList(
+        SelectField('Availability', choices=AVAILABILTY),
+        'Options'
+    )
+
+    submit = SubmitField()

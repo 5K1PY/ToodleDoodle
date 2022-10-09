@@ -19,9 +19,9 @@ CREATE TABLE poll_options (
 
 CREATE TABLE poll_data (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    poll_option_id INTEGER,
+    poll_option_id INTEGER NOT NULL,
     user TEXT NOT NULL,
-    entry TEXT NOT NULL,
+    entry INTEEGER NOT NULL,
     CONSTRAINT fk_poll_option_id
         FOREIGN KEY (poll_option_id)
         REFERENCES poll_options(id)
