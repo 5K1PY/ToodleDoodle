@@ -96,5 +96,4 @@ class PollForm(FlaskForm):
         
         value = super().validate_on_submit(*args, **kwargs)
         self.error_message = self.errors
-        print("Here", value)
         return value
