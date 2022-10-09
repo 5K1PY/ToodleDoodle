@@ -16,9 +16,6 @@ class Option:
     def year_and_month(self):
         return f"{calendar.month_name[self.month]} {self.year}"
 
-    def day_and_time(self):
-        return f"{self.dayname} {self.day}{self.time if self.time else ''}"
-
     def __str__(self):
         return self.text
 
