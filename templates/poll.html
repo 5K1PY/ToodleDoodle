@@ -33,7 +33,7 @@
                 class_="form-control")
             }}</td>
             <th>
-                <div >
+                <div class="text-center">
                     <input type="checkbox" class="btn-check" id="interval-mode" autocomplete="off" style="min-width: 165px;">
                     <label class="btn btn-outline-primary" for="interval-mode"
                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Toggle interval mode">
@@ -45,15 +45,17 @@
             <td>{{option(class_="form-control option-select")}}</td>
             {% endfor %}
 
-            <td>{{form.submit(class_="btn btn-primary")}}</td>
+            <td>{{form.submit(class_="btn btn-primary text-center")}}</td>
             </form>
         </tr>
         {% for row in poll.rows %}
         <tr>
             <td style="text-align: center">{{row[0]}}</td>
-            <td><a href="?edit={{row[0]}}">
-                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-primary">✏️</button>
-            </a></td>
+            <td>
+                <div class="text-center"><a href="?edit={{row[0]}}">
+                    <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-primary">✏️</button>
+                </a></div>
+            </td>
             {% for cell in row[1] %}
             <td style="text-align: center">
                 {{cell}}
