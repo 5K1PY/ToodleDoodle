@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect
 from werkzeug.exceptions import abort
 
 from form import CreationForm, PollForm
-from db import make_poll, poll_exists, read_poll, write_poll
+from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sosecret'
@@ -67,19 +67,25 @@ def get_poll(poll_id):
         abort(404)
     poll=read_poll(poll_id)
     form = PollForm()
+    errors = ""
     if form.validate_on_submit():
-        write_poll(
-            form.name.data,
-            map(lambda x: x.option_id, poll.options),
-            form.options.data
-        )
-        poll=read_poll(poll_id)
+        if user_filled_poll(poll_id, form.name.data):
+            errors = "User already filled in the poll."
+        else:
+            write_poll(
+                form.name.data,
+                map(lambda x: x.option_id, poll.options),
+                form.options.data
+            )
+            poll=read_poll(poll_id)
+    else:
+        errors = form.errors
     
     if len(form.options) == 0:
         for i in range(len(poll.options)):
             form.options.append_entry()
 
     
-    return render_template('poll.html', poll=poll, form=form)
+    return render_template('poll.html', poll=poll, form=form, errors=errors)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)

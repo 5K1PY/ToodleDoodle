@@ -55,15 +55,15 @@ def poll_exists(connection, id):
 
 
 @db_operation
-def read_poll(connection, id):
+def read_poll(connection, poll_id):
     name = connection.execute(
         'SELECT title FROM polls WHERE id=?',
-        (id,)
+        (poll_id,)
     ).fetchall()[0][0]
 
     options = connection.execute(
         'SELECT id, option FROM poll_options WHERE poll_id=?',
-        (id,)
+        (poll_id,)
     ).fetchall()
 
     users = connection.execute(
@@ -73,7 +73,7 @@ def read_poll(connection, id):
         GROUP BY poll_data.user
         ORDER BY poll_data.user;
         """,
-        (id,)
+        (poll_id,)
     ).fetchall()
 
     entries = (connection.execute(
@@ -81,7 +81,7 @@ def read_poll(connection, id):
         JOIN poll_data ON poll_options.id==poll_data.poll_option_id
         WHERE poll_options.poll_id=?;
         """,
-        (id,)
+        (poll_id,)
     ).fetchall())
 
     return Poll(name, options, users, entries)
@@ -94,6 +94,15 @@ def write_poll(connection, name, option_ids, choices):
             VALUES (?, ?, ?)""",
             (option_id, name, AVAILABILTY.index(choice))
         )
+
+@db_operation
+def user_filled_poll(connection, poll_id, user):
+    return len(connection.execute(
+        """SELECT * FROM poll_data
+        INNER JOIN poll_options ON poll_data.poll_option_id=poll_options.id
+        WHERE poll_options.poll_id=? AND poll_data.user=?""",
+        (poll_id, user),
+    ).fetchall()) > 0
 
 if __name__ == "__main__":
     # don't run this accidentally
