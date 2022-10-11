@@ -1,1 +1,2 @@
 AVAILABILTY = ["❔", "✅", "❌", "✔️"]
+DEFAULT_AVAILABILITY = AVAILABILTY[0]

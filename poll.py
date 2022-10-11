@@ -2,7 +2,7 @@ import calendar
 from datetime import date
 import re
 
-from constants import AVAILABILTY
+from constants import AVAILABILTY, DEFAULT_AVAILABILITY
 
 class Option:
     def __init__(self, option_id, text):
@@ -35,7 +35,7 @@ class Poll:
         self.users = list(map(lambda x: x[0], users))
         user_key = {user: i for i, user in enumerate(self.users)}
 
-        self.rows = [[user] + [None]*(len(self.options)) for user in self.users]
+        self.rows = [[user] + [DEFAULT_AVAILABILITY]*(len(self.options)) for user in self.users]
         for option_id, user, entry in entries:
             self.rows[user_key[user]][option_key[option_id]+1
             ] = AVAILABILTY[entry]
