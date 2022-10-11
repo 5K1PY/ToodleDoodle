@@ -57,6 +57,13 @@
             <td></td>
         </tr>
         {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            {% for availabilty in poll.total_availability %}
+                <td class="text-center">{{availabilty[0]}} + ({{availabilty[1]}})</td>
+            {% endfor %}
+        </tr>
     </table>
     </div>
     <script src="{{ url_for('static', filename='js/poll.js') }}"></script>
