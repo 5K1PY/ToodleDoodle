@@ -47,3 +47,8 @@ class Poll:
             if self.options[i].year_and_month() != self.options[j].year_and_month():
                 return (j - i)
         return (len(self.options) - i)
+
+    def remove_row(self, user):
+        for i, row in enumerate(self.rows):
+            if row[0] == user:
+                return self.rows.pop(i)

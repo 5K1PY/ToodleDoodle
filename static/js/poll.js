@@ -21,6 +21,4 @@ $(function() {
         }
         options[i] = this.value;
     });
-
-
 });

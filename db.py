@@ -104,6 +104,19 @@ def user_filled_poll(connection, poll_id, user):
         (poll_id, user),
     ).fetchall()) > 0
 
+@db_operation
+def delete_user_from_poll(connection, poll_id, user):
+    return len(connection.execute(
+        """DELETE FROM poll_data
+        WHERE id IN (
+            SELECT poll_data.id FROM poll_data
+            INNER JOIN poll_options ON poll_data.poll_option_id=poll_options.id
+            WHERE poll_options.poll_id=? AND poll_data.user=?
+        )""",
+        (poll_id, user),
+    ).fetchall()) > 0
+
+
 if __name__ == "__main__":
     # don't run this accidentally
     # init()

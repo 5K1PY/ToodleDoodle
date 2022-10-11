@@ -33,8 +33,8 @@
                 class_="form-control")
             }}</td>
             <th>
-                <input type="checkbox" class="btn-check" id="interval-mode" autocomplete="off">
-                <label class="btn btn-outline-primary" for="interval-mode">⇥</label>
+                <input type="checkbox" class="btn-check" id="interval-mode" autocomplete="off" style="min-width: 165px;">
+                <label class="btn btn-outline-primary" for="interval-mode">➡</label>
             </th>
             {% for option in form.options %}
             <td>{{option(class_="form-control option-select")}}</td>
@@ -46,7 +46,9 @@
         {% for row in poll.rows %}
         <tr>
             <td style="text-align: center">{{row[0]}}</td>
-            <td><button type="button" class="btn btn-primary" id="edit" data-target="{{row[0]}}">✏️</button></td>
+            <td><a href="?edit={{row[0]}}">
+                <button type="button" class="btn btn-primary">✏️</button>
+            </a></td>
             {% for cell in row[1] %}
             <td style="text-align: center">
                 {{cell}}
