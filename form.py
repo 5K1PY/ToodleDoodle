@@ -3,7 +3,7 @@ from wtforms import Form, FieldList, FormField, IntegerField, SelectField, \
         StringField, BooleanField, SubmitField, DateField, EmailField, TimeField
 from wtforms import validators
 
-from constants import AVAILABILTY
+from constants import AVAILABILITY
 
 class CreationOption(Form):
     day_mode = SelectField(
@@ -107,7 +107,7 @@ class PollForm(FlaskForm):
     )
 
     options = FieldList(
-        SelectField('Availability', choices=AVAILABILTY),
+        SelectField('Availability', choices=AVAILABILITY),
         'Options'
     )
 

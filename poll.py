@@ -2,7 +2,7 @@ import calendar
 from datetime import date
 import re
 
-from constants import AVAILABILTY, AVAILABLE, DEFAULT_AVAILABILITY, NOT_PREFERED
+from constants import AVAILABILITY, AVAILABLE, DEFAULT_AVAILABILITY, NOT_PREFERED
 
 class Option:
     def __init__(self, option_id, text):
@@ -37,7 +37,7 @@ class Poll:
 
         self.rows = [[user, [DEFAULT_AVAILABILITY]*(len(self.options))] for user in self.users]
         for option_id, user, entry in entries:
-            self.rows[user_key[user]][1][option_key[option_id]] = AVAILABILTY[entry]
+            self.rows[user_key[user]][1][option_key[option_id]] = AVAILABILITY[entry]
 
     def diffrent_than_last(self, i):
         return (i == 0) or (self.options[i-1].year_and_month() != self.options[i].year_and_month())

@@ -1,6 +1,6 @@
 import sqlite3
 import secrets
-from constants import AVAILABILTY
+from constants import AVAILABILITY
 
 from poll import Poll
 
@@ -92,7 +92,7 @@ def write_poll(connection, name, option_ids, choices):
         connection.execute(
             """INSERT INTO poll_data(poll_option_id, user, entry)
             VALUES (?, ?, ?)""",
-            (option_id, name, AVAILABILTY.index(choice))
+            (option_id, name, AVAILABILITY.index(choice))
         )
 
 @db_operation
