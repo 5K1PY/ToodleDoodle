@@ -38,15 +38,6 @@ class Poll:
         self.rows = [[user, [DEFAULT_AVAILABILITY]*(len(self.options))] for user in self.users]
         for option_id, user, entry in entries:
             self.rows[user_key[user]][1][option_key[option_id]] = AVAILABILTY[entry]
-    
-        self.total_availability = [[0, 0] for _ in self.options]
-        for i in range(len(self.users)):
-            for j in range(len(self.options)):
-                if self.rows[i][1][j] == AVAILABLE:
-                    self.total_availability[j][0] += 1
-                    print(i, j)
-                elif self.rows[i][1][j] == NOT_PREFERED:
-                    self.total_availability[j][1] += 1
 
     def diffrent_than_last(self, i):
         return (i == 0) or (self.options[i-1].year_and_month() != self.options[i].year_and_month())
@@ -61,3 +52,12 @@ class Poll:
         for i, row in enumerate(self.rows):
             if row[0] == user:
                 return self.rows.pop(i)
+
+    def availabilty(self, option_i):
+        availability = [0, 0]
+        for i in range(len(self.rows)):
+            if self.rows[i][1][option_i] == AVAILABLE:
+                availability[0] += 1
+            elif self.rows[i][1][option_i] == NOT_PREFERED:
+                availability[1] += 1
+        return availability
