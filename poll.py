@@ -53,11 +53,22 @@ class Poll:
             if row[0] == user:
                 return self.rows.pop(i)
 
-    def availabilty(self, option_i):
-        availability = [0, 0]
+    def calc_availabilty(self):
+        self.availability = [[0, 0] for _ in self.options]
         for i in range(len(self.rows)):
-            if self.rows[i][1][option_i] == AVAILABLE:
-                availability[0] += 1
-            elif self.rows[i][1][option_i] == NOT_PREFERED:
-                availability[1] += 1
-        return availability
+            for option_i in range(len(self.options)):
+                if self.rows[i][1][option_i] == AVAILABLE:
+                    self.availability[option_i][0] += 1
+                elif self.rows[i][1][option_i] == NOT_PREFERED:
+                    self.availability[option_i][1] += 1
+                
+        self.best_option = 0
+        for i in range(len(self.availability)):
+            if sum(self.availability[i]) > sum(self.availability[self.best_option]):
+                self.best_option = i
+            elif sum(self.availability[i]) == sum(self.availability[self.best_option]) and \
+                 self.availability[i][0] > self.availability[self.best_option][0]:
+                self.best_option = i
+        
+    def is_best_option(self, availability):
+        return availability == self.availability[self.best_option]

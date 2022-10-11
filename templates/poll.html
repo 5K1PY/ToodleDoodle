@@ -71,8 +71,12 @@
         <tr>
             <td></td>
             <td></td>
-            {% for _ in poll.options %}
-                <td class="text-center">{{poll.availabilty(loop.index-1)[0]}} + ({{poll.availabilty(loop.index-1)[1]}})</td>
+            {% for availability in poll.availability %}
+                <td class="text-center">
+                    {% if poll.is_best_option(availability) %} <strong> {% endif %}
+                    {{availability[0]}}+({{availability[1]}})
+                    {% if poll.is_best_option(availability) %} </strong> {% endif %}
+                </td>
             {% endfor %}
             <td></td>
         </tr>

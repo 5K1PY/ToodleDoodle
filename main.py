@@ -123,6 +123,7 @@ def get_poll(poll_id):
     else:
         errors = form.errors
     
+    poll.calc_availabilty()
     return render_template('poll.html', poll=poll, form=form, errors=errors)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)
