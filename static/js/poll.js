@@ -1,5 +1,7 @@
 $(function() {
     var $this = $(this);
+
+    // prepare values for interval mode
     var options = [];
     for (var i=0;; i++) {
         var option = $this.find(`#options-${i}`);
@@ -10,6 +12,7 @@ $(function() {
     }
     console.log(options);
 
+    // interval mode
     $this.find('.option-select').on('change', function() {
         var i = parseInt($(this).attr('id').match(/^options-(\d+)$/)[1]);
         if ($this.find('#interval-mode').is(":checked")) {
@@ -21,4 +24,8 @@ $(function() {
         }
         options[i] = this.value;
     });
+
+    // enable tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 });
