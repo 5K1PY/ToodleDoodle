@@ -35,10 +35,9 @@ class Poll:
         self.users = list(map(lambda x: x[0], users))
         user_key = {user: i for i, user in enumerate(self.users)}
 
-        self.rows = [[user] + [DEFAULT_AVAILABILITY]*(len(self.options)) for user in self.users]
+        self.rows = [[user, [DEFAULT_AVAILABILITY]*(len(self.options))] for user in self.users]
         for option_id, user, entry in entries:
-            self.rows[user_key[user]][option_key[option_id]+1
-            ] = AVAILABILTY[entry]
+            self.rows[user_key[user]][1][option_key[option_id]] = AVAILABILTY[entry]
     
     def diffrent_than_last(self, i):
         return (i == 0) or (self.options[i-1].year_and_month() != self.options[i].year_and_month())
