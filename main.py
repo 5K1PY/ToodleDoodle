@@ -102,6 +102,14 @@ def get_poll(poll_id):
                 name, options = poll.remove_row(user)
                 set_form_values(form, name, options)
 
+    elif query[0] == "delete":
+        user = query[1]
+        if not user_filled_poll(poll_id, user):
+            return abort(400)
+        else:
+            delete_user_from_poll(poll_id, user)
+            return redirect(".")
+
     if validated or form.validate_on_submit():
         if user_filled_poll(poll_id, form.name.data):
             errors = "User already filled in the poll."

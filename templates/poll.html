@@ -45,7 +45,7 @@
             <td>{{option(class_="form-control option-select")}}</td>
             {% endfor %}
 
-            <td>{{form.submit(class_="btn btn-primary text-center")}}</td>
+            <td><div class="text-center">{{form.submit(class_="btn btn-primary")}}</div></td>
             </form>
         </tr>
         {% for row in poll.rows %}
@@ -53,7 +53,7 @@
             <td style="text-align: center">{{row[0]}}</td>
             <td>
                 <div class="text-center"><a href="?edit={{row[0]}}">
-                    <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-primary">✏️</button>
+                    <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-outline-secondary">✏️</button>
                 </a></div>
             </td>
             {% for cell in row[1] %}
@@ -61,7 +61,11 @@
                 {{cell}}
             </td>
             {% endfor %}
-            <td></td>
+            <td>
+                <div class="text-center"><a href="?delete={{row[0]}}">
+                    <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" type="button" class="btn btn-danger">🗑️</button>
+                </a></div>
+            </td>
         </tr>
         {% endfor %}
         <tr>
