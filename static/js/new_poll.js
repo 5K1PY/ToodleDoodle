@@ -68,19 +68,30 @@ $(function() {
     $this.find('#add-row').click(function() {
         var target = $($(this).data('target'))
         var old_entry = target.find('.options-entry:last');
-        console.log(old_entry)
         var new_entry = old_entry.clone(true, true);
         var elem_id = new_entry[0].id;
         var elem_num = parseInt(elem_id.replace(/options-(\d{1,4})/m, '$1')) + 1;
         new_entry.attr('id', `options-${elem_num}`);
+    
+        // Rename ids and names
         new_entry.find('input, select, span, div').each(function() {
             var id = $(this).attr('id').replace('-' + (elem_num - 1), '-' + (elem_num));
             var class_ = $(this).attr('class').replace('-' + (elem_num - 1), '-' + (elem_num));
             $(this).attr('name', id).attr('id', id).attr('class', class_);
         });
+
+        // Clear values
         new_entry.find('input').each(function() {
             $(this).val('');
         });
+        new_entry.find(`#options-${elem_num}-day_increment`).each(function() {
+            $(this).val('1');
+        });
+        new_entry.find(`#options-${elem_num}-time_increment`).each(function() {
+            $(this).val('60');
+        });
+
+        new_entry.find()
         old_entry.after(new_entry);
         $this.find('.time-mode').each(select_time_enabler);
         $this.find('.day-mode').each(select_day_enabler);

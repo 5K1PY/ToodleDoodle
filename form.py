@@ -3,7 +3,7 @@ from wtforms import Form, FieldList, FormField, IntegerField, SelectField, \
         StringField, BooleanField, SubmitField, DateField, EmailField, TimeField
 from wtforms import validators
 
-from constants import AVAILABILITY
+from constants import AVAILABILITY, DAY_INCREMENT_DEFAULT, TIME_INCREMENT_DEFAULT
 
 class CreationOption(Form):
     day_mode = SelectField(
@@ -20,7 +20,8 @@ class CreationOption(Form):
     )
     day_increment = IntegerField(
         'DayIncrement',
-        validators=[validators.Optional()]
+        validators=[validators.Optional()],
+        default=DAY_INCREMENT_DEFAULT
     )
 
     time_mode = SelectField(
@@ -41,7 +42,8 @@ class CreationOption(Form):
     )
     time_increment = IntegerField(
         'TimeIncrement',
-        validators=[validators.Optional()]
+        validators=[validators.Optional()],
+        default=TIME_INCREMENT_DEFAULT
     )
 
 class CreationForm(FlaskForm):
