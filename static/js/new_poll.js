@@ -1,6 +1,8 @@
 $(function() {
     var $this = $(this);
-    function select_day_enabler() {
+    
+    // shows respective day inputs
+    function select_day_updater() {
         var day1 = $this.find(`#${this.id.replace('day_mode', 'day1-box')}`);
         var from = $this.find(`#${this.id.replace('day_mode', 'day_from')}`);
         var day2 = $this.find(`.${this.id.replace('day_mode', 'day2-box-inside')}`);
@@ -18,7 +20,8 @@ $(function() {
         }
     };
 
-    function select_time_enabler() {
+    // shows respective time inputs
+    function select_time_updater() {
         var time1_box = $this.find(`#${this.id.replace('time_mode', 'time1-box')}`);
         var time2_box = $this.find(`#${this.id.replace('time_mode', 'time2-box')}`);
 
@@ -56,6 +59,7 @@ $(function() {
         }
     };
 
+    // enables / disables remove row button
     function remove_row_enabler() {
         if ($this.find('.options-entry').length > 1) {
             $this.find('#remove-row').prop('disabled', false);
@@ -93,8 +97,8 @@ $(function() {
 
         new_entry.find()
         old_entry.after(new_entry);
-        $this.find('.time-mode').each(select_time_enabler);
-        $this.find('.day-mode').each(select_day_enabler);
+        $this.find('.time-mode').each(select_time_updater);
+        $this.find('.day-mode').each(select_day_updater);
         remove_row_enabler();
     });
 
@@ -108,7 +112,8 @@ $(function() {
         remove_row_enabler();
     });
 
-    $this.find('.time-mode').each(select_time_enabler).on('change', select_time_enabler);
-    $this.find('.day-mode').each(select_day_enabler).on('change', select_day_enabler);
+    // apply updaters
+    $this.find('.time-mode').each(select_time_updater).on('change', select_time_updater);
+    $this.find('.day-mode').each(select_day_updater).on('change', select_day_updater);
     remove_row_enabler();
 });
