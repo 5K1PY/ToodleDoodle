@@ -12,7 +12,7 @@ $(function() {
     }
 
     // interval mode
-    $this.find('.option-select').on('change', function() {
+    $this.find('.option-select').change(function() {
         var i = parseInt($(this).attr('id').match(/^options-(\d+)$/)[1]);
         if ($this.find('#interval-mode').is(":checked")) {
             for (var j=i+1; j < options.length && options[i] === options[j]; j++) {
@@ -24,8 +24,22 @@ $(function() {
 
     // transpose table
     $this.find('#transpose-tables').change(function() {
-        console.log("TODO: transpose tables")
+        console.log("TODO: transpose tables");
     });
+
+    // show / hide weights
+    function toggle_weights() {
+        if ($(this).is(":checked")) {
+            $this.find(".edit-button").hide();
+            $this.find(".delete-button").hide();
+            $this.find(".weight").show();
+        } else {
+            $this.find(".edit-button").show();
+            $this.find(".delete-button").show();
+            $this.find(".weight").hide();
+        }
+    }
+    $this.find('#weights').each(toggle_weights).change(toggle_weights);
 
     // enable tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -40,6 +54,8 @@ $(function() {
             $this.find('#transpose-tables').click();
         } else if (key == 'i') {
             $this.find('#interval-mode').click();
+        } else if (key == 'w') {
+            $this.find('#weights').click();
         }
     });
 });

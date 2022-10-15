@@ -42,9 +42,15 @@
     <tr>
         <td style="text-align: center">{{row[0]}}</td>
         <td>
-            <div class="text-center"><a href="?edit={{row[0]}}">
-                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-outline-secondary">✏️</button>
-            </a></div>
+            <div class="d-flex justify-content-center">
+                <div class="edit-button" ><a href="?edit={{row[0]}}">
+                    <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-outline-secondary">✏️</button>
+                    </a>
+                </div>
+                <div class="weight">
+                    <input class="form-control text-center" style="width: 48px;" value="1">
+                </div>
+            </div>
         </td>
         {% for cell in row[1] %}
         <td style="text-align: center">
@@ -52,7 +58,7 @@
         </td>
         {% endfor %}
         <td>
-            <div class="text-center"><a href="?delete={{row[0]}}">
+            <div class="delete-button text-center"><a href="?delete={{row[0]}}">
                 <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" type="button" class="btn btn-outline-danger">🗑️</button>
             </a></div>
         </td>
