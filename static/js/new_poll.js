@@ -1,4 +1,7 @@
 $(function() {
+    var DAY_INCREMENT_DEFAULT = 1;
+    var TIME_INCREMENT_DEFAULT = 60;
+
     var $this = $(this);
     
     // shows respective day inputs
@@ -89,10 +92,10 @@ $(function() {
             $(this).val('');
         });
         new_entry.find(`#options-${elem_num}-day_increment`).each(function() {
-            $(this).val('1');
+            $(this).val(DAY_INCREMENT_DEFAULT);
         });
         new_entry.find(`#options-${elem_num}-time_increment`).each(function() {
-            $(this).val('60');
+            $(this).val(TIME_INCREMENT_DEFAULT);
         });
 
         new_entry.find()

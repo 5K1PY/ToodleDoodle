@@ -4,6 +4,11 @@ $(function() {
     // constants
     var AVAILABLE = "✅";
     var NOT_PREFERED = "(✔️)";
+    var MODES = {
+        't': 'transpose-tables',
+        'i': 'interval-mode',
+        'w': 'weights',
+    };
 
     // prepare values for interval mode
     var options = [];
@@ -103,12 +108,11 @@ $(function() {
         var key = String.fromCharCode(e.keyCode || e.which);
         if (key == 's') {
             $this.find('#show-settings').click();
-        } else if (key == 't') {
-            $this.find('#transpose-tables').click();
-        } else if (key == 'i') {
-            $this.find('#interval-mode').click();
-        } else if (key == 'w') {
-            $this.find('#weights').click();
+        }
+        for (const bound_key in MODES) {
+            if (key == bound_key) {
+                $this.find(`#${MODES[bound_key]}`).click();
+            }
         }
     });
 });
