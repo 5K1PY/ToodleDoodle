@@ -74,11 +74,11 @@ $(function() {
             }
         });
         // find best availability
-        var best_total = 0;
+        var best_i = 0;
         for(var i=1; i<totals.length; i++) {
-            if (totals[i][0] + totals[i][1] >= totals[best_total][0] + totals[best_total][1]) {
-                if (totals[i][0] + totals[i][1] > totals[best_total][0] + totals[best_total][1] || totals[i][0] > totals[best_total][0]) {
-                    best_total = i;
+            if (totals[i][0] + totals[i][1] >= totals[best_i][0] + totals[best_i][1]) {
+                if (totals[i][0] + totals[i][1] > totals[best_i][0] + totals[best_i][1] || totals[i][0] > totals[best_i][0]) {
+                    best_i = i;
                 }
             }
         }
@@ -86,6 +86,9 @@ $(function() {
         $this.find('.summary').each(function() {
             var i = parseInt(this.id.match(/^summary-(\d+)$/)[1]);
             $(this).text(`${totals[i][0]}+(${totals[i][1]})`);
+            if (totals[i][0] === totals[best_i][0] && totals[i][1] === totals[best_i][1]) {
+                $(this).wrapInner("<strong></strong>")
+            }
         });
     }
     summary();
