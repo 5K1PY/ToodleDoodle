@@ -1,6 +1,7 @@
 import datetime
 from flask import Flask, render_template, redirect, request
 from werkzeug.exceptions import abort
+from urllib.parse import unquote
 
 from form import CreationForm, PollForm
 from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll
@@ -85,7 +86,7 @@ def get_poll(poll_id):
 
     query = request.query_string.decode('utf-8').split("=", 1)
     if query[0] == "edit":
-        user = query[1]
+        user = unquote(query[1])
         if not user_filled_poll(poll_id, user):
             return abort(400)
         else:
