@@ -22,20 +22,20 @@
         {{form.options.label}}
         {% for option in form.options %}
             {% set oid = 'options-' + (loop.index-1) | string %}
-            <div id="{{oid}}" class="container options-entry">
+            <div id="{{oid}}" class="container mb-3 options-entry">
                 <div class="row" id="{{oid}}-row1">
-                    <div class="col mb-1" id="{{oid}}-day_mode-box">
+                    <div class="col-lg-3 mb-1" id="{{oid}}-day_mode-box">
                         {{option.day_mode(class_="form-control day-mode")}}
                     </div>
-                    <div class="input-group mb-1 col" id="{{oid}}-day1-box">
+                    <div class="input-group mb-1 col-lg" id="{{oid}}-day1-box">
                         <span class="input-group-text" id="{{oid}}-day_from">from</span>
                         {{option.day1(class_="form-control")}}
                     </div>
-                    <div class="input-group mb-1 col" id="{{oid}}-day2-box">
+                    <div class="input-group mb-1 col-lg" id="{{oid}}-day2-box">
                         <span class="input-group-text {{oid}}-day2-box-inside" id="{{oid}}-day_to">to</span>
                         {{option.day2(class_="form-control " + oid + "-day2-box-inside")}}
                     </div>
-                    <div class="input-group mb-1 col" id="{{oid}}-day_increment-box">
+                    <div class="input-group mb-1 col-lg" id="{{oid}}-day_increment-box">
                         <span class="input-group-text {{oid}}-day_increment-box-inside" id="{{oid}}-day_every">every</span>
                         {{option.day_increment(class_="form-control " + oid + "-day_increment-box-inside")}}
                         <span class="input-group-text {{oid}}-day_increment-box-inside" id="{{oid}}-day_days">days</span>
@@ -43,21 +43,21 @@
                 </div>
 
                 <div class="row" id="{{oid}}-row2">
-                    <div class="mb-3 col-3" id="{{oid}}-time_mode-box"> {{option.time_mode(class_="form-control time-mode")}} </div>
-                    <div class="input-group mb-3 col" id="{{oid}}-time1-box">
+                    <div class="mb-1 col-lg-3" id="{{oid}}-time_mode-box"> {{option.time_mode(class_="form-control time-mode")}} </div>
+                    <div class="input-group mb-1 col-lg" id="{{oid}}-time1-box">
                         <span class="input-group-text" id="{{oid}}-time_from" hidden>from</span>
                         {{option.time1(class_="form-control", hidden=True)}}
                     </div>
-                    <div class="input-group mb-3 col" id="{{oid}}-time2-box">
+                    <div class="input-group mb-1 col-lg" id="{{oid}}-time2-box">
                         <span class="input-group-text" id="{{oid}}-time_to" hidden>to</span>
                         {{option.time2(class_="form-control", hidden=True)}}
                     </div>
-                    <div class="input-group mb-3 col" id="{{oid}}-time_increment-box" hidden>
+                    <div class="input-group mb-1 col-lg" id="{{oid}}-time_increment-box" hidden>
                         <span class="input-group-text" id="{{oid}}-time_every">every</span>
                         {{option.time_increment(class_="form-control mode", step=30)}}
                         <span class="input-group-text" id="{{oid}}-time_mins">mins</span>
                     </div>
-                    <div class="col mb-3" id="{{oid}}-time3-box" hidden>
+                    <div class="col-lg mb-1" id="{{oid}}-time3-box" hidden>
                         {{option.time3(class_="form-control mode")}}
                     </div>
                 </div>
