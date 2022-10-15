@@ -16,21 +16,19 @@
           <h5 class="offcanvas-title" id="settingsLabel">Settings</h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="transpose-tables">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Transpose tables <kbd>t</kbd></label>
-            </div>
-            <h4>Users table</h4>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="interval-mode">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Interval mode <kbd>i</kbd></label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="weights">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Weights</label>
-            </div>
-            
+        <div class="offcanvas-body mb-2">
+            {% for category in modes %}
+                <h4>{{category}}</h4>
+                {% for mode in modes[category] %}
+                <div class="d-flex justify-content-between mb-1">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="{{mode.id}}">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">{{mode.name}}</label>
+                    </div>
+                    <kbd>{{mode.key}}</kbd>
+                </div>
+                {% endfor %}
+            {% endfor %}
         </div>
     </div>
 

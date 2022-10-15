@@ -2,6 +2,7 @@ import datetime
 from flask import Flask, render_template, redirect, request
 from werkzeug.exceptions import abort
 from urllib.parse import unquote
+from constants import MODES
 
 from form import CreationForm, PollForm
 from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll
@@ -125,6 +126,6 @@ def get_poll(poll_id):
         errors = form.errors
     
     poll.calc_availabilty()
-    return render_template('poll.html', poll=poll, form=form, errors=errors)
+    return render_template('poll.html', poll=poll, form=form, errors=errors, modes=MODES)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)
