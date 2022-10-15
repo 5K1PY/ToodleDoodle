@@ -22,6 +22,11 @@ $(function() {
         options[i] = this.value;
     });
 
+    // transpose table
+    $this.find('#transpose-tables').change(function() {
+        console.log("TODO: transpose tables")
+    });
+
     // enable tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -31,6 +36,8 @@ $(function() {
         var key = String.fromCharCode(e.keyCode || e.which);
         if (key == 's') {
             $this.find('#show-settings').click();
+        } else if (key == 't') {
+            $this.find('#transpose-tables').click();
         } else if (key == 'i') {
             $this.find('#interval-mode').click();
         }
