@@ -29,8 +29,10 @@ $(function() {
     // add shortcuts
     $this.keypress(function(e) {
         var key = String.fromCharCode(e.keyCode || e.which);
-        if (key == 'i') {
-            console.log($this.find('#interval-mode').click())
+        if (key == 's') {
+            $this.find('#show-settings').click();
+        } else if (key == 'i') {
+            $this.find('#interval-mode').click();
         }
     });
 });
