@@ -1,0 +1,74 @@
+{% macro table_option_user(poll, form) -%}
+<table class="table">
+    <thead>
+        <th style="min-width: 150px;">Name</th>
+        <th></th>
+        {% for option in poll.options %}
+            {% if poll.diffrent_than_last(loop.index-1) %}
+            <th colspan="{{poll.next_year_and_month(loop.index-1)}}"> {{option.year_and_month()}} </th>
+            {% endif %}
+        {% endfor %}
+        <th></th>
+    </thead>
+    <thead>
+        <th></th> <th></th>
+        {% for option in poll.options %}
+            <th style="min-width: 65px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
+        {% endfor %}
+        <th></th>
+    </thead>
+    <tr>
+        <form method="post">    
+        {{ form.hidden_tag() }}
+        <td>{{form.name(
+            placeholder="Your name",
+            class_="form-control")
+        }}</td>
+        <th>
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings">
+                    ⚙️
+                </button>
+             </div>
+        </th>
+        {% for option in form.options %}
+        <td>{{option(class_="form-control option-select")}}</td>
+        {% endfor %}
+
+        <td><div class="text-center">{{form.submit(class_="btn btn-primary")}}</div></td>
+        </form>
+    </tr>
+    {% for row in poll.rows %}
+    <tr>
+        <td style="text-align: center">{{row[0]}}</td>
+        <td>
+            <div class="text-center"><a href="?edit={{row[0]}}">
+                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-outline-secondary">✏️</button>
+            </a></div>
+        </td>
+        {% for cell in row[1] %}
+        <td style="text-align: center">
+            {{cell}}
+        </td>
+        {% endfor %}
+        <td>
+            <div class="text-center"><a href="?delete={{row[0]}}">
+                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" type="button" class="btn btn-outline-danger">🗑️</button>
+            </a></div>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        {% for availability in poll.availability %}
+            <td class="text-center">
+                {% if poll.is_best_option(availability) %} <strong> {% endif %}
+                {{availability[0]}}+({{availability[1]}})
+                {% if poll.is_best_option(availability) %} </strong> {% endif %}
+            </td>
+        {% endfor %}
+        <td></td>
+    </tr>
+</table>
+{% endmacro -%}
