@@ -40,7 +40,8 @@
     </tr>
     {% for row in poll.rows %} <!-- Users -->
     <tr>
-        <td style="text-align: center">{{row[0]}}</td>
+        {% set row_index = loop.index - 1 %}
+        <td class="text-center align-middle">{{row[0]}}</td>
         <td>
             <div class="d-flex justify-content-center">
                 <div class="edit-button" ><a href="?edit={{row[0]}}">
@@ -48,12 +49,12 @@
                     </a>
                 </div>
                 <div class="weight">
-                    <input class="form-control text-center" style="width: 48px;" value="1">
+                    <input class="weight-input form-control text-center" id="weight-{{row_index}}" style="width: 48px;" value="1">
                 </div>
             </div>
         </td>
         {% for cell in row[1] %}
-        <td style="text-align: center">
+        <td id="availability-{{row_index}}-{{loop.index-1}}" class="availability text-center align-middle">
             {{cell}}
         </td>
         {% endfor %}
@@ -67,12 +68,8 @@
     <tfoot> <!-- Summary -->
         <td></td>
         <td></td>
-        {% for availability in poll.availability %}
-            <td class="text-center">
-                {% if poll.is_best_option(availability) %} <strong> {% endif %}
-                {{availability[0]}}+({{availability[1]}})
-                {% if poll.is_best_option(availability) %} </strong> {% endif %}
-            </td>
+        {% for _ in poll.options %}
+            <td id="summary-{{loop.index-1}}" class="summary text-center"></td>
         {% endfor %}
         <td></td>
     </tfoot>

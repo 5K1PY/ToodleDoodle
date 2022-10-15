@@ -4,7 +4,7 @@ from collections import namedtuple
 DAY_INCREMENT_DEFAULT = 1
 TIME_INCREMENT_DEFAULT = 60
 
-
+# change this also in poll.js
 UNKNOWN = "❔"
 AVAILABLE = "✅"
 UNAVAILABLE = "❌"

@@ -1,6 +1,10 @@
 $(function() {
     var $this = $(this);
 
+    // constants
+    var AVAILABLE = "✅";
+    var NOT_PREFERED = "(✔️)";
+
     // prepare values for interval mode
     var options = [];
     for (var i=0;; i++) {
@@ -40,6 +44,52 @@ $(function() {
         }
     }
     $this.find('#weights').each(toggle_weights).change(toggle_weights);
+
+    // calculate summary
+    function summary() {
+        // get weights
+        var weights = [];
+        $this.find('.weight-input').each(function() {
+            var user_i = parseInt(this.id.match(/^weight-(\d+)$/)[1]);
+            while (weights.length <= user_i) {
+                weights.push(0);
+            }
+            if (!isNaN(parseFloat(this.value))) {
+                weights[user_i] = parseFloat(this.value);
+            }
+        });
+        // calculate availabilty
+        var totals = [];
+        $this.find('.availability').each(function() {
+            var m = this.id.match(/^availability-(\d+)-(\d+)$/);
+            var user_i = parseInt(m[1]), option_i = parseInt(m[2]);
+            while (totals.length <= option_i) {
+                totals.push([0, 0]);
+            }
+            if (weights.length > user_i) {
+                if ($(this).text().includes(AVAILABLE))
+                    totals[option_i][0] += weights[user_i];
+                else if ($(this).text().includes(NOT_PREFERED))
+                    totals[option_i][1] += weights[user_i];
+            }
+        });
+        // find best availability
+        var best_total = 0;
+        for(var i=1; i<totals.length; i++) {
+            if (totals[i][0] + totals[i][1] >= totals[best_total][0] + totals[best_total][1]) {
+                if (totals[i][0] + totals[i][1] > totals[best_total][0] + totals[best_total][1] || totals[i][0] > totals[best_total][0]) {
+                    best_total = i;
+                }
+            }
+        }
+        // set text
+        $this.find('.summary').each(function() {
+            var i = parseInt(this.id.match(/^summary-(\d+)$/)[1]);
+            $(this).text(`${totals[i][0]}+(${totals[i][1]})`);
+        });
+    }
+    summary();
+    $this.find('.weight-input').bind('input', summary);
 
     // enable tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

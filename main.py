@@ -124,8 +124,7 @@ def get_poll(poll_id):
             return redirect(".")
     else:
         errors = form.errors
-    
-    poll.calc_availabilty()
+
     return render_template('poll.html', poll=poll, form=form, errors=errors, modes=MODES)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)
