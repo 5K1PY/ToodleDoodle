@@ -13,7 +13,7 @@
     <thead>
         <th></th> <th></th>
         {% for option in poll.options %}
-            <th style="min-width: 65px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
+            <th style="min-width: 75px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
         {% endfor %}
         <th></th>
     </thead>
