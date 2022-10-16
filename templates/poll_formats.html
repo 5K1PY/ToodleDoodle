@@ -1,7 +1,7 @@
 {% macro table_option_user(poll, form) -%}
 <table class="table" id="options-users-table">
     <thead> <!-- Month + Year -->
-        <th style="min-width: 150px;">Name</th>
+        <th class="text-center" style="min-width: 150px;">Name</th>
         <th></th>
         {% for option in poll.options %}
             {% if poll.diffrent_than_last(loop.index-1) %}
@@ -45,7 +45,7 @@
         <td>
             <div class="d-flex justify-content-center">
                 <div class="edit-button" ><a href="?edit={{row[0]}}">
-                    <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" type="button" class="btn btn-outline-secondary">✏️</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit">✏️</button>
                     </a>
                 </div>
                 <div class="weight">
@@ -60,7 +60,7 @@
         {% endfor %}
         <td>
             <div class="delete-button text-center"><a href="?delete={{row[0]}}">
-                <button data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" type="button" class="btn btn-outline-danger">🗑️</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete">🗑️</button>
             </a></div>
         </td>
     </tr>
