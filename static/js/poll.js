@@ -90,8 +90,13 @@ $(function() {
         // set text
         $this.find('.summary').each(function() {
             var i = parseInt(this.id.match(/^summary-(\d+)$/)[1]);
-            $(this).text(`${totals[i][0]}+(${totals[i][1]})`);
-            if (totals[i][0] === totals[best_i][0] && totals[i][1] === totals[best_i][1]) {
+            if (totals.length) {
+                $(this).text(`${totals[i][0]}+(${totals[i][1]})`);
+                if (totals[i][0] === totals[best_i][0] && totals[i][1] === totals[best_i][1]) {
+                    $(this).wrapInner("<strong></strong>")
+                }
+            } else {
+                $(this).text("0+(0)");
                 $(this).wrapInner("<strong></strong>")
             }
         });
@@ -106,6 +111,7 @@ $(function() {
     // add shortcuts
     $this.keypress(function(e) {
         var key = String.fromCharCode(e.keyCode || e.which);
+        console.log(key);
         if (key == 's') {
             $this.find('#show-settings').click();
         }
