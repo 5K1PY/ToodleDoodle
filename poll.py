@@ -2,7 +2,7 @@ import calendar
 from datetime import date
 import re
 
-from constants import AVAILABILITY, AVAILABLE, DEFAULT_AVAILABILITY, NOT_PREFERED
+from constants import AVAILABILITY, DEFAULT_AVAILABILITY
 
 class Option:
     def __init__(self, option_id, text):
