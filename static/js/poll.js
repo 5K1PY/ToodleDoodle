@@ -34,6 +34,17 @@ $(function() {
     // transpose table
     $this.find('#transpose-tables').change(function() {
         console.log("TODO: transpose tables");
+	$this.find(".table").each(function () {
+	    var old_table = [];
+	    $(this).find("tr").each(function() {
+	        old_table.push([]);
+	    	$(this).find("th, td").each(function() {
+		    old_table[new_table.length-1].push(this);
+		});
+	    });
+	    
+	    var new_table = [];
+	});
     });
 
     // show / hide weights
@@ -111,7 +122,6 @@ $(function() {
     // add shortcuts
     $this.keypress(function(e) {
         var key = String.fromCharCode(e.keyCode || e.which);
-        console.log(key);
         if (key == 's') {
             $this.find('#show-settings').click();
         }
