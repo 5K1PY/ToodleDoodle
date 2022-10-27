@@ -34,17 +34,40 @@ $(function() {
     // transpose table
     $this.find('#transpose-tables').change(function() {
         console.log("TODO: transpose tables");
-	$this.find(".table").each(function () {
-	    var old_table = [];
-	    $(this).find("tr").each(function() {
-	        old_table.push([]);
-	    	$(this).find("th, td").each(function() {
-		    old_table[new_table.length-1].push(this);
-		});
-	    });
-	    
-	    var new_table = [];
-	});
+        $this.find(".table").each(function () {
+            var $table = $(this);
+            var new_table = [];
+            var column_i = [];
+            $table.find("tr").each(function() {
+                column_i.push(0);
+            });
+            var column = 0;
+            $table.find("tr").each(function() {
+                $(this).find("th, td").each(function() {
+                    var colspan = $(this).attr('colspan');
+                    colspan = colspan ? parseInt(colspan) : 1;
+                    var rowspan = $(this).attr('rowspan');
+                    rowspan = rowspan ? parseInt(rowspan) : 1;
+                    $(this).attr('rowspan', colspan);
+                    $(this).attr('colspan', rowspan);
+
+                    console.log(column_i[column]);
+                    while (new_table.length <= column_i[column]) {
+                        new_table.push($("<tr></tr>"));
+                    }
+                    new_table[column_i[column]].append($(this));
+                    column_i[column] += colspan;
+                    for (var i=1; i<rowspan; i++) {
+                        column_i[column+i]++;
+                    }
+                });
+                column++;
+            });
+            $table.find("tr").remove();
+            $.each(new_table, function(){
+                $table.append(this);
+            });
+        });
     });
 
     // show / hide weights
