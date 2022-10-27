@@ -1,10 +1,9 @@
 {% macro table_option_user(poll, form) -%}
-<form method="post">    
+<form method="post">
 {{ form.hidden_tag() }}
 <table class="table" id="options-users-table">
     <tr> <!-- Month + Year -->
-        <th class="text-center" style="min-width: 150px;">Name</th>
-        <th></th>
+        <th></th> <th></th>
         {% for option in poll.options %}
             {% if poll.diffrent_than_last(loop.index-1) %}
             <th colspan="{{poll.next_year_and_month(loop.index-1)}}"> {{option.year_and_month()}} </th>
@@ -13,17 +12,19 @@
         <th></th>
     </tr>
     <tr> <!-- Day + hour -->
-        <th></th> <th></th>
+        <th class="text-center">Name</th> <th></th>
         {% for option in poll.options %}
             <th style="min-width: 75px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
         {% endfor %}
         <th></th>
     </tr>
     <tr> <!-- Input -->
-        <td>{{form.name(
+        <td><div class="d-flex justify-content-center">
+        {{form.name(
             placeholder="Your name",
-            class_="form-control")
-        }}</td>
+            class_="form-control",
+            style="min-width: 150px; max-width: 200px;")
+        }}</div></td>
         <th>
             <div class="text-center">
                 <button class="btn btn-primary" type="button" id="show-settings" data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings">
@@ -32,7 +33,9 @@
              </div>
         </th>
         {% for option in form.options %}
-        <td>{{option(class_="form-control option-select text-center")}}</td>
+        <td><div class="d-flex justify-content-center">
+            {{option(class_="form-control option-select text-center", style="max-width: 75px;")}}
+        </div></td>
         {% endfor %}
         <td><div class="text-center">{{form.submit(class_="btn btn-primary")}}</div></td>
     </tr>
