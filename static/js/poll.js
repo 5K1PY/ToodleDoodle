@@ -125,12 +125,12 @@ $(function() {
         $this.find('.summary').each(function() {
             var i = parseInt(this.id.match(/^summary-(\d+)$/)[1]);
             if (totals.length) {
-                $(this).text(`${totals[i][0]}+(${totals[i][1]})`);
+                $(this).text(`${totals[i][0]}+\ufeff(${totals[i][1]})`);
                 if (totals[i][0] === totals[best_i][0] && totals[i][1] === totals[best_i][1]) {
                     $(this).wrapInner("<strong></strong>")
                 }
             } else {
-                $(this).text("0+(0)");
+                $(this).text("0+\ufeff(0)");
                 $(this).wrapInner("<strong></strong>")
             }
         });
