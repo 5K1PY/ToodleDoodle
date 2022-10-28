@@ -1,12 +1,12 @@
 {% macro table_option_user(poll, form) -%}
 <form method="post">
 {{ form.hidden_tag() }}
-<table class="table" id="options-users-table">
+<table class="table table-striped-columns" id="options-users-table">
     <tr> <!-- Month + Year -->
         <th></th> <th></th>
         {% for option in poll.options %}
             {% if poll.diffrent_than_last(loop.index-1) %}
-            <th colspan="{{poll.next_year_and_month(loop.index-1)}}"> {{option.year_and_month()}} </th>
+            <th class="align-middle" colspan="{{poll.next_year_and_month(loop.index-1)}}"> {{option.year_and_month()}} </th>
             {% endif %}
         {% endfor %}
         <th></th>
@@ -14,7 +14,7 @@
     <tr> <!-- Day + hour -->
         <th class="text-center">Name</th> <th></th>
         {% for option in poll.options %}
-            <th style="min-width: 75px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
+            <th class="text-center align-middle" style="min-width: 75px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
         {% endfor %}
         <th></th>
     </tr>
@@ -70,7 +70,7 @@
         <td></td>
         <td></td>
         {% for _ in poll.options %}
-            <td id="summary-{{loop.index-1}}" class="summary text-center"></td>
+            <td id="summary-{{loop.index-1}}" class="summary text-center align-middle"></td>
         {% endfor %}
         <td></td>
     </tfoot>

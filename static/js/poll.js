@@ -33,8 +33,14 @@ $(function() {
 
     // transpose table
     $this.find('#transpose-tables').change(function() {
-        console.log("TODO: transpose tables");
         $this.find(".table").each(function () {
+            if ($(this).attr("class").includes("striped-columns")) {
+                var class_ = $(this).attr("class").replace("-columns", "");
+                $(this).attr("class", class_);
+            } else {
+                var class_ = $(this).attr("class").replace("striped", "striped-columns");
+                $(this).attr("class", class_);
+            }
             var $table = $(this);
             var new_table = [];
             var column_i = [];
@@ -51,7 +57,6 @@ $(function() {
                     $(this).attr('rowspan', colspan);
                     $(this).attr('colspan', rowspan);
 
-                    console.log(column_i[column]);
                     while (new_table.length <= column_i[column]) {
                         new_table.push($("<tr></tr>"));
                     }
