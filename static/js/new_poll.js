@@ -83,8 +83,11 @@ $(function() {
         // Rename ids and names
         new_entry.find('input, select, span, div').each(function() {
             var id = $(this).attr('id').replace('-' + (elem_num - 1), '-' + (elem_num));
-            var class_ = $(this).attr('class').replace('-' + (elem_num - 1), '-' + (elem_num));
-            $(this).attr('name', id).attr('id', id).attr('class', class_);
+            $(this).attr('name', id).attr('id', id)
+            if (this.tagName != "DIV") {
+                var class_ = $(this).attr('class').replace('-' + (elem_num - 1), '-' + (elem_num));
+                $(this).attr('class', class_);
+            }
         });
 
         // Clear values
