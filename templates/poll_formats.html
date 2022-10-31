@@ -1,7 +1,7 @@
 {% macro table_option_user(poll, form) -%}
 <form method="post">
 {{ form.hidden_tag() }}
-<table class="table table-striped-columns" id="options-users-table">
+<table class="table" id="options-users-table">
     <tr> <!-- Month + Year -->
         <th></th> <th></th>
         {% for option in poll.options %}
