@@ -86,14 +86,19 @@ $(function() {
     // show / hide weights
     function toggle_weights() {
         if ($(this).is(":checked")) {
+            setCookie(WEIGHTS_TAG, 'true');
             $this.find(".edit-button").hide();
             $this.find(".delete-button").hide();
             $this.find(".weight").show();
         } else {
+            setCookie(WEIGHTS_TAG, 'false');
             $this.find(".edit-button").show();
             $this.find(".delete-button").show();
             $this.find(".weight").hide();
         }
+    }
+    if (getCookie(WEIGHTS_TAG) === 'true') {
+        $this.find(`#${WEIGHTS_TAG}`).click();
     }
     $this.find(`#${WEIGHTS_TAG}`).each(toggle_weights).change(toggle_weights);
 
