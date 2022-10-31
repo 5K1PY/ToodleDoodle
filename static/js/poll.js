@@ -2,12 +2,16 @@ $(function() {
     var $this = $(this);
 
     // constants
-    var AVAILABLE = "✅";
-    var NOT_PREFERED = "(✔️)";
-    var MODES = {
-        't': 'transpose-tables',
-        'i': 'interval-mode',
-        'w': 'weights',
+    const AVAILABLE = "✅";
+    const NOT_PREFERED = "(✔️)";
+
+    const TRANSPOSE_TABLES_TAG = 'transpose-tables';
+    const INTERVAL_MODE_TAG = 'interval-mode';
+    const WEIGHTS_TAG = 'weights';
+    const SETTINGS = {
+        't': TRANSPOSE_TABLES_TAG,
+        'i': INTERVAL_MODE_TAG,
+        'w': WEIGHTS_TAG,
     };
 
     // prepare values for interval mode
@@ -23,16 +27,22 @@ $(function() {
     // interval mode
     $this.find('.option-select').change(function() {
         var i = parseInt($(this).attr('id').match(/^options-(\d+)$/)[1]);
-        if ($this.find('#interval-mode').is(":checked")) {
+        if ($this.find(`#${INTERVAL_MODE_TAG}`).is(":checked")) {
             for (var j=i+1; j < options.length && options[i] === options[j]; j++) {
                 $this.find(`#options-${j}`).val(this.value).change();
             }
         }
         options[i] = this.value;
     });
+    $this.find(`#${INTERVAL_MODE_TAG}`).change(() => toggleCookie(INTERVAL_MODE_TAG));
+    if (getCookie(INTERVAL_MODE_TAG) === 'true') {
+        $this.find(`#${INTERVAL_MODE_TAG}`).click();
+        toggleCookie(INTERVAL_MODE_TAG);
+    }
 
-    // transpose table
-    $this.find('#transpose-tables').change(function() {
+    function transpose_tables() {
+        toggleCookie(TRANSPOSE_TABLES_TAG);
+
         $this.find(".table").each(function () {
             var $table = $(this);
             var new_table = [];
@@ -66,7 +76,12 @@ $(function() {
                 $table.append(this);
             });
         });
-    });
+    }
+    $this.find(`#${TRANSPOSE_TABLES_TAG}`).change(transpose_tables);
+    if (getCookie(TRANSPOSE_TABLES_TAG) === 'true') {
+        $this.find(`#${TRANSPOSE_TABLES_TAG}`).click();
+        toggleCookie(TRANSPOSE_TABLES_TAG);
+    }
 
     // show / hide weights
     function toggle_weights() {
@@ -80,7 +95,7 @@ $(function() {
             $this.find(".weight").hide();
         }
     }
-    $this.find('#weights').each(toggle_weights).change(toggle_weights);
+    $this.find(`#${WEIGHTS_TAG}`).each(toggle_weights).change(toggle_weights);
 
     // calculate summary
     function summary() {
@@ -136,6 +151,28 @@ $(function() {
     summary();
     $this.find('.weight-input').bind('input', summary);
 
+    // cookies
+    function getCookie(cname) {
+        var cookies = document.cookie;
+        var parts = cookies.split(`${cname}=`);
+        if (parts.length > 1) {
+            return parts[1].split(';')[0];
+        } else {
+            return undefined;
+        }
+    }
+    function setCookie(cname, val) {
+        document.cookie = `${cname}=${val}; path=/`;
+    }
+    function toggleCookie(cname) {
+        var val = getCookie(cname);
+        if (val === 'true') {
+            setCookie(cname, 'false');
+        } else {
+            setCookie(cname, 'true');
+        }
+    }
+
     // enable tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -146,9 +183,9 @@ $(function() {
         if (key == 's') {
             $this.find('#show-settings').click();
         }
-        for (const bound_key in MODES) {
+        for (const bound_key in SETTINGS) {
             if (key == bound_key) {
-                $this.find(`#${MODES[bound_key]}`).click();
+                $this.find(`#${SETTINGS[bound_key]}`).click();
             }
         }
     });
