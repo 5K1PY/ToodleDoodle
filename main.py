@@ -86,7 +86,7 @@ def get_poll(poll_id):
     validated = False
 
     query = request.query_string.decode('utf-8').split("=", 1)
-    if query[0] == "edit":
+    if query[0] == "edituser":
         user = unquote(query[1])
         if not user_filled_poll(poll_id, user):
             return abort(400)
