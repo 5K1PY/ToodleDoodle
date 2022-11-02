@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Edit poll {% endblock %}</h1>
+
+    <ul class="list-group">
+        {% for option in options%}
+        <li class="list-group-item">{{option}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
