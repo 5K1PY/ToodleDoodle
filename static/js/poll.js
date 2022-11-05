@@ -178,10 +178,6 @@ $(function() {
         }
     }
 
-    // enable tooltips
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
     // add shortcuts
     $this.keypress(function(e) {
         var key = String.fromCharCode(e.keyCode || e.which);
