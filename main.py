@@ -4,7 +4,7 @@ from werkzeug.exceptions import abort
 from urllib.parse import unquote
 from constants import MODES
 
-from form import CreationForm, PollForm
+from form import CreationForm, PollForm, EditForm
 from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll
 
 app = Flask(__name__)
@@ -87,7 +87,10 @@ def get_poll(poll_id):
 
     query = request.query_string.decode('utf-8').split("=", 1)
     if query[0] == "edit":
-        return render_template("edit_poll.html", options=poll.options)
+        form = EditForm()
+        for option in poll.options:
+            form.options.append_entry(option)
+        return render_template("edit_poll.html", form=form)
     if query[0] == "edituser":
         user = unquote(query[1])
         if not user_filled_poll(poll_id, user):

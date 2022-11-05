@@ -114,3 +114,14 @@ class PollForm(FlaskForm):
     )
 
     submit = SubmitField()
+
+class EditForm(FlaskForm):
+    options = FieldList(
+        StringField(
+            'Option',
+            validators=[validators.InputRequired(), validators.Length(max=100)]
+        ),
+        'Options'
+    )
+
+    submit = SubmitField()
