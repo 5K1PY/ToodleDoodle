@@ -32,6 +32,11 @@
         <div class="alert alert-danger mt-3" role="alert" id="no-js">
           This page uses javascript. Without it some functionality will not work.
         </div>
+
+        {% if errors is not none and errors %}
+        <div class="alert alert-danger mt-3" role="alert"> {{errors}} </div>
+        {% endif %}
+
         {% block content %} {% endblock %}
     </div>
     

@@ -2,10 +2,6 @@
 {% import 'poll_formats.html' as pf -%}
 
 {% block content %}
-    {% if errors %}
-    <div class="alert alert-danger" role="alert"> {{errors}} </div>
-    {% endif %}
-
     <h1>{{poll.name}}</h1>
     <div class="overflow-auto">
     {{pf.table_option_user(poll, form)}}

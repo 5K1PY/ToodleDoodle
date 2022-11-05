@@ -1,3 +1,4 @@
+import re
 from flask_wtf import FlaskForm
 from wtforms import Form, FieldList, FormField, IntegerField, SelectField, \
         StringField, BooleanField, SubmitField, DateField, EmailField, TimeField
@@ -125,3 +126,15 @@ class EditForm(FlaskForm):
     )
 
     submit = SubmitField()
+
+    def validate_on_submit(self, *args, **kwargs):
+        self.error_message = ""
+
+        for option in self.options:
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}( \d{2}:\d{2})?", option.data.strip()):
+                self.error_message = "Option must be in format YYYY-MM-DD or YYYY-MM-DD HH:MM."
+                return False
+        value = super().validate_on_submit(*args, **kwargs)
+        self.error_message = self.errors
+        return value
+

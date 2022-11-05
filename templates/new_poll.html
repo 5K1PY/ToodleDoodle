@@ -3,10 +3,6 @@
 {% block content %}
     <h1>{% block title %} New poll {% endblock %}</h1>
 
-    {% if form.error_message %}
-    <div class="alert alert-danger" role="alert"> {{form.error_message}} </div>
-    {% endif %}
-
     <form method="post">
         {{ form.hidden_tag() }}
         <div class="form-group">

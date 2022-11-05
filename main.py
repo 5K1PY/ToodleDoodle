@@ -51,7 +51,6 @@ def index():
     return render_template('index.html')
 
 
-
 @app.route('/new_poll', methods=['GET', 'POST'])
 def new_poll():
     form = CreationForm()
@@ -61,7 +60,7 @@ def new_poll():
         secret = make_poll(poll_name, poll_options)
         return redirect(f'/poll/{secret}')
 
-    return render_template('new_poll.html', form=form)
+    return render_template('new_poll.html', form=form, errors=form.error_message)
 
 
 def set_form_values(form, name, options):
@@ -76,6 +75,11 @@ def get_poll(poll_id):
     if not poll_exists(poll_id):
         return abort(404)
 
+    query = request.query_string.decode('utf-8').split("=", 1)
+    if query[0] == "edit":
+        return edit_poll(poll_id)
+
+
     poll = read_poll(poll_id)
     form = PollForm()
     if len(form.options) == 0:
@@ -85,12 +89,6 @@ def get_poll(poll_id):
     errors = ""
     validated = False
 
-    query = request.query_string.decode('utf-8').split("=", 1)
-    if query[0] == "edit":
-        form = EditForm()
-        for option in poll.options:
-            form.options.append_entry(option)
-        return render_template("edit_poll.html", form=form)
     if query[0] == "edituser":
         user = unquote(query[1])
         if not user_filled_poll(poll_id, user):
@@ -110,7 +108,7 @@ def get_poll(poll_id):
                 set_form_values(form, name, options)
 
     elif query[0] == "delete":
-        user = query[1]
+        user = unquote(query[1])
         if not user_filled_poll(poll_id, user):
             return abort(400)
         else:
@@ -131,5 +129,20 @@ def get_poll(poll_id):
         errors = form.errors
 
     return render_template('poll.html', poll=poll, form=form, errors=errors, modes=MODES)
+
+def edit_poll(poll_id):
+    poll = read_poll(poll_id)
+    form = EditForm()
+    
+    if len(form.options) == 0:
+        for option in poll.options:
+            form.options.append_entry(option)
+
+    if form.validate_on_submit():
+        for option in form.options:
+            print(option.data)
+    else:
+        print(form.error_message)
+    return render_template("edit_poll.html", form=form, errors=form.error_message)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)
