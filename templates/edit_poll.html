@@ -4,13 +4,13 @@
     <h1>{% block title %} Edit poll {% endblock %}</h1>
     <form method="post">
     {{ form.hidden_tag() }}
-    <ul class="list-group mb-2">
+    <ul id="options" class="list-group mb-2">
         {% for option in form.options %}
-        <li class="list-group-item">
+        <li id="options-{{loop.index-1}}" class="list-group-item options-entry">
             <div class="d-flex justify-content-between">
                 {{option(class_="form-control me-3", placeholder="Option " + (loop.index|string))}}
                 <div class="delete-button text-center">
-                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete">🗑️</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" data-target="options-{{loop.index-1}}">🗑️</button>
                 </div>
             </div>
         </li>
