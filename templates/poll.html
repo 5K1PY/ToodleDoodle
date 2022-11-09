@@ -6,7 +6,11 @@
         <h1>{{poll.name}}</h1>
         <a href="?edit"><button type="button" class="btn btn-primary">Edit poll</button></a>
     </div>
+
+    {% if poll.description %}
     <p>{{poll.description}}</p>
+    {% endif %}
+
     <div class="overflow-auto">
     {{pf.table_option_user(poll, form)}}
     </div>
