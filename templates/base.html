@@ -36,6 +36,7 @@
         {% if errors is not none and errors %}
         <div class="alert alert-danger mt-3" role="alert"> {{errors}} </div>
         {% endif %}
+        <div class="mb-3"></div>
 
         {% block content %} {% endblock %}
     </div>
