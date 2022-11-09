@@ -2,7 +2,10 @@
 {% import 'poll_formats.html' as pf -%}
 
 {% block content %}
-    <h1>{{poll.name}}</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>{{poll.name}}</h1>
+        <a href="?edit"><button type="button" class="btn btn-primary">Edit poll</button></a>
+    </div>
     <div class="overflow-auto">
     {{pf.table_option_user(poll, form)}}
     </div>

@@ -116,6 +116,34 @@ def delete_user_from_poll(connection, poll_id, user):
         (poll_id, user),
     ).fetchall()) > 0
 
+@db_operation
+def set_poll_options(connection, poll_id, new_options):
+    options = connection.execute(
+        """SELECT option FROM poll_options WHERE poll_id=?
+        ORDER BY option""",
+        (poll_id,)
+    ).fetchall()
+    options = list(map(lambda x: x[0], options))
+    new_options.sort()
+
+    i, j = 0, 0
+    while (i < len(options) or j < len(new_options)):
+        if i < len(options) and (j == len(new_options) or options[i] < new_options[j]):
+            connection.execute(
+                "DELETE FROM poll_options WHERE poll_id=? AND option=?",
+                (poll_id, options[i])
+            ).fetchall()
+            i += 1
+        elif i == len(options) or options[i] > new_options[j]:
+            connection.execute(
+                "INSERT INTO poll_options(poll_id, option) VALUES (?, ?);",
+                (poll_id, new_options[j])
+            )
+            j += 1
+        else:
+            i += 1
+            j += 1
+
 
 if __name__ == "__main__":
     # don't run this accidentally
