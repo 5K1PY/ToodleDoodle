@@ -75,8 +75,9 @@ class Option:
 
 
 class Poll:
-    def __init__(self, name, options, users, entries):
+    def __init__(self, name, description, options, users, entries):
         self.name = name
+        self.description = description
         self.options = list(map(lambda x: Option(*x), options))
         self.options.sort()
         option_key = {opt.option_id: i for i, opt in enumerate(self.options)}

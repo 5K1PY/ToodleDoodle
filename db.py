@@ -23,7 +23,7 @@ def init(connection):
 
 
 @db_operation
-def make_poll(connection, name, options):
+def make_poll(connection, name, description, options):
     same_secrets = True
     while same_secrets:
         secret = secrets.token_urlsafe(16)
@@ -33,8 +33,8 @@ def make_poll(connection, name, options):
         ).fetchall()
 
     connection.execute(
-        'INSERT INTO polls VALUES (?, ?);',
-        (secret, name)
+        'INSERT INTO polls VALUES (?, ?, ?);',
+        (secret, name, description)
     )
     for option in options:
         connection.execute(
@@ -56,10 +56,10 @@ def poll_exists(connection, id):
 
 @db_operation
 def read_poll(connection, poll_id):
-    name = connection.execute(
-        'SELECT title FROM polls WHERE id=?',
+    name, description = connection.execute(
+        'SELECT title, description FROM polls WHERE id=?',
         (poll_id,)
-    ).fetchall()[0][0]
+    ).fetchall()[0]
 
     options = connection.execute(
         'SELECT id, option FROM poll_options WHERE poll_id=?',
@@ -84,7 +84,7 @@ def read_poll(connection, poll_id):
         (poll_id,)
     ).fetchall())
 
-    return Poll(name, options, users, entries)
+    return Poll(name, description, options, users, entries)
 
 @db_operation
 def write_poll(connection, name, option_ids, choices):
@@ -117,7 +117,7 @@ def delete_user_from_poll(connection, poll_id, user):
     ).fetchall()) > 0
 
 @db_operation
-def set_poll_options(connection, poll_id, new_options):
+def edit_poll(connection, poll_id, new_options):
     options = connection.execute(
         """SELECT option FROM poll_options WHERE poll_id=?
         ORDER BY option""",

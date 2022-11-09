@@ -5,17 +5,23 @@
 
     <form method="post">
         {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{form.poll_title.label}}
+        <div class="form-group mb-1">
             {{form.poll_title(
                 placeholder="Poll title",
                 class_="form-control",
                 value=request.form['poll_title'])
             }}
         </div>
+        <div class="form-group mb-1">
+            {{form.description(
+                placeholder="Poll description",
+                class_="form-control",
+                value=request.form['description'])
+            }}
+        </div>
 
         <div id="options" data-toggle="options" class="">
-        {{form.options.label}}
+        <h5>{{form.options.label}}</h5>
         {% for option in form.options %}
             {% set oid = 'options-' + (loop.index-1) | string %}
             <div id="{{oid}}" class="container mb-3 options-entry">

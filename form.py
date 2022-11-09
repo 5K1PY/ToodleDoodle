@@ -2,6 +2,7 @@ import re
 from flask_wtf import FlaskForm
 from wtforms import Form, FieldList, FormField, IntegerField, SelectField, \
         StringField, BooleanField, SubmitField, DateField, EmailField, TimeField
+from wtforms.widgets import TextArea
 from wtforms import validators
 
 from constants import AVAILABILITY, DAY_INCREMENT_DEFAULT, TIME_INCREMENT_DEFAULT
@@ -51,6 +52,11 @@ class CreationForm(FlaskForm):
     poll_title = StringField(
         'Poll title',
         validators=[validators.InputRequired(), validators.Length(max=100)]
+    )
+    description = StringField(
+        'Description',
+        validators=[validators.Optional()],
+        widget=TextArea()
     )
 
     options = FieldList(
