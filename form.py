@@ -133,6 +133,12 @@ class EditOption(Form):
     )
 
 class EditForm(FlaskForm):
+    description = StringField(
+        'Description',
+        validators=[validators.Optional()],
+        widget=TextArea()
+    )
+
     options = FieldList(
         FormField(EditOption),
         'Options'

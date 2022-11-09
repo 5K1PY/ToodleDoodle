@@ -117,7 +117,11 @@ def delete_user_from_poll(connection, poll_id, user):
     ).fetchall()) > 0
 
 @db_operation
-def edit_poll(connection, poll_id, new_options):
+def edit_poll_db(connection, poll_id, description, new_options):
+    connection.execute(
+        "UPDATE polls SET description=? WHERE id=?",
+        (description, poll_id)
+    )
     options = connection.execute(
         """SELECT option FROM poll_options WHERE poll_id=?
         ORDER BY option""",

@@ -5,7 +5,7 @@ from urllib.parse import unquote
 from constants import MODES
 
 from form import CreationForm, PollForm, EditForm
-from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll
+from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db
 from poll import gen_new_options, gen_edit_options
 
 app = Flask(__name__)
@@ -98,7 +98,7 @@ def get_poll(poll_id):
 
 def edit_poll(poll_id):
     poll = read_poll(poll_id)
-    form = EditForm()
+    form = EditForm(description=poll.description)
     form.error_message = ""
     if len(form.options) == 0:
         for option in poll.options:
@@ -110,7 +110,7 @@ def edit_poll(poll_id):
     errors = ""
     if request.method == "POST":
         if form.validate_on_submit():
-            edit_poll(poll_id, gen_edit_options(form.options.data))
+            edit_poll_db(poll_id, form.description.data, gen_edit_options(form.options.data))
             return redirect(".")
         else:
             errors = form.errors
