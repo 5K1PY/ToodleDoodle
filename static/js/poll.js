@@ -180,6 +180,9 @@ $(function() {
 
     // add shortcuts
     $this.keypress(function(e) {
+        if (e.target.tagName === 'INPUT' && e.target.type === 'text') {
+            return;
+        }
         var key = String.fromCharCode(e.keyCode || e.which);
         if (key == 's') {
             $this.find('#show-settings').click();
