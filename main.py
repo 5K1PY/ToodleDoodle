@@ -110,6 +110,7 @@ def edit_poll(poll_id):
     if request.method == "POST":
         if form.validate_on_submit():
             set_poll_options(poll_id, gen_edit_options(form.options.data))
+            return redirect(".")
         else:
             errors = form.errors
 
