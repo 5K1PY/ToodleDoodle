@@ -10,10 +10,6 @@ $(function() {
         if ($(el).attr('name')) {
             $(el).attr('name', id);
         }
-        if ($(el).attr('placeholder')) {
-            var placeholder = $(el).attr('placeholder').replace(from+1, to+1);
-            $(el).attr('placeholder', placeholder)
-        }
         if ($(el).attr('data-target')) {
             var data_target = $(el).attr('data-target').replace('-' + from, '-' + to);
             $(el).attr('data-target', data_target)
