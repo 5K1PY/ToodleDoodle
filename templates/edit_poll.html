@@ -8,7 +8,8 @@
         {% for option in form.options %}
         <li id="option-{{loop.index-1}}" class="list-group-item options-entry">
             <div class="d-flex justify-content-between">
-                {{option(class_="form-control me-3", placeholder="Option " + (loop.index|string))}}
+                {{option.day(class_="form-control me-3")}}
+                {{option.time(class_="form-control me-3")}}
                 <div class="delete-button text-center">
                     <button type="button" class="delete-option btn btn-outline-danger" data-target="#option-{{loop.index-1}}">🗑️</button>
                 </div>

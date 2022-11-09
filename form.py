@@ -116,25 +116,20 @@ class PollForm(FlaskForm):
 
     submit = SubmitField()
 
+class EditOption(Form):
+    day = DateField(
+        'Day',
+        validators=[validators.InputRequired()]
+    )
+    time = TimeField(
+        'Time',
+        validators=[validators.Optional()]
+    )
+
 class EditForm(FlaskForm):
     options = FieldList(
-        StringField(
-            'Option',
-            validators=[validators.InputRequired(), validators.Length(max=100)]
-        ),
+        FormField(EditOption),
         'Options'
     )
 
     submit = SubmitField()
-
-    def validate_on_submit(self, *args, **kwargs):
-        self.error_message = ""
-
-        for option in self.options:
-            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}( \d{2}:\d{2})?", option.data.strip()):
-                self.error_message = "Option must be in format YYYY-MM-DD or YYYY-MM-DD HH:MM."
-                return False
-        value = super().validate_on_submit(*args, **kwargs)
-        self.error_message = self.errors
-        return value
-

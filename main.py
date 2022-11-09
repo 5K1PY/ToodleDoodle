@@ -1,4 +1,4 @@
-import datetime
+from datetime import date, time, timedelta
 from flask import Flask, render_template, redirect, request
 from werkzeug.exceptions import abort
 from urllib.parse import unquote
@@ -39,8 +39,8 @@ def gen_options(data):
                     hours, minutes = (hours + minutes // 60), (minutes % 60)
                     if hours >= 24:
                         break
-                    time = datetime.time(hours, minutes)
-            day1 = day1 + datetime.timedelta(days=day_increment)
+                    time = time(hours, minutes)
+            day1 = day1 + timedelta(days=day_increment)
 
     poll_options = list(sorted(set(poll_options)))
     return poll_options
@@ -133,16 +133,22 @@ def get_poll(poll_id):
 def edit_poll(poll_id):
     poll = read_poll(poll_id)
     form = EditForm()
-    
+    form.error_message = ""
     if len(form.options) == 0:
         for option in poll.options:
-            form.options.append_entry(option)
+            option = str(option).split(" ")
+            day1 = date.fromisoformat(option[0])
+            time1 = time.fromisoformat(option[1]) if len(option) > 1 else None
+            form.options.append_entry({"day": day1, "time": time1})
 
-    if form.validate_on_submit():
-        for option in form.options:
-            print(option.data)
-    else:
-        print(form.error_message)
-    return render_template("edit_poll.html", form=form, errors=form.error_message)
+    errors = ""
+    if request.method == "POST":
+        if form.validate_on_submit():
+            for option in form.options:
+                print(option.data)
+        else:
+            errors = form.errors
+
+    return render_template("edit_poll.html", form=form, errors=errors)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)
