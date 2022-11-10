@@ -45,15 +45,18 @@
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <ul class="list-group">
-                <li class="list-group-item">
-                  <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox">
-                  <label class="form-check-label" for="firstCheckbox">First checkbox</label>
-                </li>
-                {% for option in poll.options %}
-                    {{option.text}}
-                {% endfor %}
-            </ul>
+            <form method="post">
+                {{ form.hidden_tag() }}
+                <ul class="list-group mb-2">
+                    {% for option in close_form.options %}
+                    <li class="list-group-item">
+                        {{option(class_="form-check-input me-1")}}
+                        <label class="form-check-label" for="firstCheckbox">{{option.label}}</label>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="text-end">{{close_form.close(class_="btn btn-danger")}}</div>
+            </form>
         </div>
     </div>
 

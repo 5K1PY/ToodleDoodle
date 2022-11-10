@@ -1,7 +1,7 @@
 import re
 from flask_wtf import FlaskForm
 from wtforms import Form, FieldList, FormField, IntegerField, SelectField, \
-        StringField, BooleanField, SubmitField, DateField, EmailField, TimeField
+        StringField, RadioField, SubmitField, DateField, TimeField
 from wtforms.widgets import TextArea
 from wtforms import validators
 
@@ -145,3 +145,13 @@ class EditForm(FlaskForm):
     )
 
     submit = SubmitField()
+
+
+class CloseForm(FlaskForm):
+    options = RadioField(
+        'Options',
+        choices=[],
+        validators=[validators.InputRequired()]
+    )
+
+    close = SubmitField("Close form")
