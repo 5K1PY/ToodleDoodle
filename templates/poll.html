@@ -4,7 +4,10 @@
 {% block content %}
     <div class="d-flex justify-content-between align-items-center">
         <h1>{{poll.name}}</h1>
-        <a href="?edit"><button type="button" class="btn btn-primary">Edit poll</button></a>
+        <div>
+            <a href="?edit"><button type="button" class="btn btn-primary">Edit poll</button></a>
+            <button type="button" class="btn btn-danger" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Close poll</button>
+        </div>
     </div>
 
     {% if poll.description %}
@@ -33,6 +36,24 @@
                 </div>
                 {% endfor %}
             {% endfor %}
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true" data-bs-backdrop="false">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasRightLabel">Choose final time</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                  <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox">
+                  <label class="form-check-label" for="firstCheckbox">First checkbox</label>
+                </li>
+                {% for option in poll.options %}
+                    {{option.text}}
+                {% endfor %}
+            </ul>
         </div>
     </div>
 
