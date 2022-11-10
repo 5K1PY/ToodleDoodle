@@ -5,7 +5,8 @@ DROP TABLE poll_data;
 CREATE TABLE polls (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
-    description TEXT
+    description TEXT,
+    closed INTEGER NOT NULL
 );
 
 CREATE TABLE poll_options (

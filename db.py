@@ -7,6 +7,7 @@ from poll import Poll
 def db_operation(f):
     def g(*args, **kwargs):
         connection = sqlite3.connect('database.db')
+        connection.execute('PRAGMA foreign_keys = ON')
 
         value = f(connection, *args, **kwargs)
 
@@ -33,7 +34,7 @@ def make_poll(connection, name, description, options):
         ).fetchall()
 
     connection.execute(
-        'INSERT INTO polls VALUES (?, ?, ?);',
+        'INSERT INTO polls VALUES (?, ?, ?, "FALSE");',
         (secret, name, description)
     )
     for option in options:
@@ -56,8 +57,8 @@ def poll_exists(connection, id):
 
 @db_operation
 def read_poll(connection, poll_id):
-    name, description = connection.execute(
-        'SELECT title, description FROM polls WHERE id=?',
+    name, description, closed = connection.execute(
+        'SELECT title, description, closed FROM polls WHERE id=?',
         (poll_id,)
     ).fetchall()[0]
 
@@ -84,7 +85,7 @@ def read_poll(connection, poll_id):
         (poll_id,)
     ).fetchall())
 
-    return Poll(name, description, options, users, entries)
+    return Poll(name, description, closed, options, users, entries)
 
 @db_operation
 def write_poll(connection, name, option_ids, choices):
@@ -106,7 +107,7 @@ def user_filled_poll(connection, poll_id, user):
 
 @db_operation
 def delete_user_from_poll(connection, poll_id, user):
-    return len(connection.execute(
+    connection.execute(
         """DELETE FROM poll_data
         WHERE id IN (
             SELECT poll_data.id FROM poll_data
@@ -114,7 +115,7 @@ def delete_user_from_poll(connection, poll_id, user):
             WHERE poll_options.poll_id=? AND poll_data.user=?
         )""",
         (poll_id, user),
-    ).fetchall()) > 0
+    )
 
 @db_operation
 def edit_poll_db(connection, poll_id, description, new_options):
@@ -147,6 +148,24 @@ def edit_poll_db(connection, poll_id, description, new_options):
         else:
             i += 1
             j += 1
+
+
+@db_operation
+def close_poll_db(connection, poll_id, final_option):
+    connection.execute(
+        'UPDATE polls SET closed="TRUE" WHERE id=?',
+        (poll_id,)
+    )
+
+    final_option_id = connection.execute(
+        'SELECT id FROM poll_options WHERE poll_id=? AND option=?',
+        (poll_id, final_option)
+    ).fetchall()[0][0]
+
+    connection.execute(
+        'DELETE FROM poll_options WHERE poll_id=? AND id!=?',
+        (poll_id, final_option_id)
+    )
 
 
 if __name__ == "__main__":

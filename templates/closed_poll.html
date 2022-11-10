@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% import 'poll_formats.html' as pf -%}
+
+{% block content %}
+    <h1>{{poll.name}}</h1>
+
+    {% if poll.description %}
+    <p>{{poll.description}}</p>
+    {% endif %}
+
+{% endblock %}

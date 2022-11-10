@@ -5,7 +5,7 @@ from urllib.parse import unquote
 from constants import MODES
 
 from form import CreationForm, PollForm, EditForm, CloseForm
-from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db
+from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db, close_poll_db
 from poll import gen_new_options, gen_edit_options
 
 app = Flask(__name__)
@@ -48,19 +48,20 @@ def get_poll(poll_id):
 
     poll = read_poll(poll_id)
     form = PollForm()
-    close_form = CloseForm()
+    closeForm = CloseForm()
     if len(form.options) == 0:
         for option in poll.options:
             form.options.append_entry()
     
     for option in poll.options:
-        close_form.options.choices.append(option.text)
+        closeForm.options.choices.append(option.text)
 
     errors = ""
     validated = False
 
-    if close_form.validate_on_submit():
-        return
+    if closeForm.validate_on_submit():
+        return close_poll(poll_id, poll, closeForm.options.data)
+
     if query[0] == "edituser":
         user = unquote(query[1])
         if not user_filled_poll(poll_id, user):
@@ -100,7 +101,7 @@ def get_poll(poll_id):
     else:
         errors = form.errors
 
-    return render_template('poll.html', poll=poll, form=form, close_form=close_form, errors=errors, modes=MODES)
+    return render_template('poll.html', poll=poll, form=form, close_form=closeForm, errors=errors, modes=MODES)
 
 def edit_poll(poll_id):
     poll = read_poll(poll_id)
@@ -122,5 +123,9 @@ def edit_poll(poll_id):
             errors = form.errors
 
     return render_template("edit_poll.html", form=form, errors=errors)
+
+def close_poll(poll_id, poll, final_option):
+    close_poll_db(poll_id, final_option)
+    return render_template("closed_poll.html", poll=poll)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)
