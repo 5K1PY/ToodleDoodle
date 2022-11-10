@@ -41,11 +41,6 @@ def get_poll(poll_id):
     if not poll_exists(poll_id):
         return abort(404)
 
-    query = request.query_string.decode('utf-8').split("=", 1)
-    if query[0] == "edit":
-        return edit_poll(poll_id)
-
-
     poll = read_poll(poll_id)
     form = PollForm()
     closeForm = CloseForm()
@@ -57,18 +52,26 @@ def get_poll(poll_id):
         closeForm.options.choices.append(option.text)
 
     errors = ""
-    validated = False
 
+    # poll closed / closing
     if closeForm.validate_on_submit():
-        return close_poll(poll_id, poll, closeForm.options.data)
+        close_poll_db(poll_id, closeForm.options.data)
+        poll = read_poll(poll_id)
+    if poll.closed == 'TRUE':
+        return closed_poll(poll_id, poll)
 
+    # editing poll
+    query = request.query_string.decode('utf-8').split("=", 1)
+    if query[0] == "edit":
+        return edit_poll(poll_id, poll)
+
+    # edditing / deleting users
     if query[0] == "edituser":
         user = unquote(query[1])
         if not user_filled_poll(poll_id, user):
             return abort(400)
         else:
             if form.validate_on_submit():
-                validated = True
                 delete_user_from_poll(poll_id, user)
                 write_poll(
                     form.name.data,
@@ -88,7 +91,7 @@ def get_poll(poll_id):
             delete_user_from_poll(poll_id, user)
             return redirect(".")
 
-    if validated or form.validate_on_submit():
+    if form.validate_on_submit():
         if user_filled_poll(poll_id, form.name.data):
             errors = "User already filled in the poll."
         else:
@@ -103,8 +106,7 @@ def get_poll(poll_id):
 
     return render_template('poll.html', poll=poll, form=form, close_form=closeForm, errors=errors, modes=MODES)
 
-def edit_poll(poll_id):
-    poll = read_poll(poll_id)
+def edit_poll(poll_id, poll):
     form = EditForm(description=poll.description)
     form.error_message = ""
     if len(form.options) == 0:
@@ -124,8 +126,7 @@ def edit_poll(poll_id):
 
     return render_template("edit_poll.html", form=form, errors=errors)
 
-def close_poll(poll_id, poll, final_option):
-    close_poll_db(poll_id, final_option)
+def closed_poll(poll_id, poll):
     return render_template("closed_poll.html", poll=poll)
 
 app.run(debug=True, use_debugger=False, use_reloader=True)
