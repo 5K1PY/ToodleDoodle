@@ -3,7 +3,7 @@ from datetime import date
 import re
 
 import datetime
-from constants import AVAILABILITY, DEFAULT_AVAILABILITY
+from constants import AVAILABILITY, AVAILABILITY_WITH_TEXT, DEFAULT_AVAILABILITY
 
 def gen_new_options(data):
     poll_options = []
@@ -103,3 +103,14 @@ class Poll:
         for i, row in enumerate(self.rows):
             if row[0] == user:
                 return self.rows.pop(i)
+
+    def gen_closed_text(self):
+        lines = []
+        users = {a: [] for a in AVAILABILITY}
+        for row in self.rows:
+            users[row[1][0]].append(row[0])
+        for icon, description in AVAILABILITY_WITH_TEXT:
+            if len(users[icon]):
+                lines.append([])
+                lines[-1] += [str(len(users[icon])), f' users chose {icon} {description}: ' + ', '.join(users[icon])]
+        return lines

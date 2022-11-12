@@ -11,6 +11,13 @@ UNAVAILABLE = "❌"
 NOT_PREFERED = "(✔️)"
 
 AVAILABILITY = [UNKNOWN, AVAILABLE, UNAVAILABLE, NOT_PREFERED]
+AVAILABILITY_WITH_TEXT = [
+    (AVAILABLE, "Available"),
+    (NOT_PREFERED, "Not prefered"),
+    (UNAVAILABLE, "Unavailable"),
+    (UNKNOWN, "Unknown")
+]
+
 DEFAULT_AVAILABILITY = UNKNOWN
 
 # change this also in poll.js
