@@ -4,6 +4,7 @@ from werkzeug.exceptions import abort
 from urllib.parse import unquote
 from constants import MODES
 
+from constants import AVAILABILITY
 from form import CreationForm, PollForm, EditForm, CloseForm
 from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db, close_poll_db
 from poll import gen_new_options, gen_edit_options
@@ -104,7 +105,7 @@ def get_poll(poll_id):
     else:
         errors = form.errors
 
-    return render_template('poll.html', poll=poll, form=form, close_form=closeForm, errors=errors, modes=MODES)
+    return render_template('poll.html', poll=poll, form=form, close_form=closeForm, errors=errors, modes=MODES, AVAILABILITY=AVAILABILITY)
 
 def edit_poll(poll_id, poll):
     form = EditForm(description=poll.description)

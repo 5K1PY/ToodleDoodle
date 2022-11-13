@@ -8,10 +8,12 @@ $(function() {
     const TRANSPOSE_TABLES_TAG = 'transpose-tables';
     const INTERVAL_MODE_TAG = 'interval-mode';
     const WEIGHTS_TAG = 'weights';
+    const BUTTON_TAG = 'buttons';
     const SETTINGS = {
         't': TRANSPOSE_TABLES_TAG,
         'i': INTERVAL_MODE_TAG,
         'w': WEIGHTS_TAG,
+        'b': BUTTON_TAG
     };
 
     // prepare values for interval mode
@@ -25,15 +27,18 @@ $(function() {
     }
 
     // interval mode
-    $this.find('.option-select').change(function() {
-        var i = parseInt($(this).attr('id').match(/^options-(\d+)$/)[1]);
+    function interaval_update() {
+        var i = parseInt($(this).attr('id').match(/^options-(\d+)/)[1]);
         if ($this.find(`#${INTERVAL_MODE_TAG}`).is(":checked")) {
-            for (var j=i+1; j < options.length && options[i] === options[j]; j++) {
-                $this.find(`#options-${j}`).val(this.value).change();
+            if (i + 1 < options.length && options[i] === options[i+1]) {
+                enable_interval = false;
+                $this.find(`#options-${i+1}`).val(this.value).change();
+                enable_interval = true;
             }
         }
         options[i] = this.value;
-    });
+    }
+    $this.find('.options-select').change(interaval_update);
     $this.find(`#${INTERVAL_MODE_TAG}`).change(() => toggleCookie(INTERVAL_MODE_TAG));
     if (getCookie(INTERVAL_MODE_TAG) === 'true') {
         $this.find(`#${INTERVAL_MODE_TAG}`).click();
@@ -101,6 +106,47 @@ $(function() {
         $this.find(`#${WEIGHTS_TAG}`).click();
     }
     $this.find(`#${WEIGHTS_TAG}`).each(toggle_weights).change(toggle_weights);
+
+    var locks = Array($this.find(".option-time").length).fill(false);
+    var enable_interval = true;
+    // sync option between select menus and buttons
+    function optionsync(ev) {
+        var match = $(this).attr('id').match(/^(options-(\d)+)/);
+        var [bare_id, id_num] = [match[1], match[2]];
+        if (locks[id_num]) {
+            return;
+        }
+        locks[id_num] = true;
+
+        var new_val = (this.value || $(this).find(':checked').next().text());
+        if (enable_interval) {
+            $this.find(`#${bare_id}`).val(new_val).each(interaval_update);
+        } else {
+            $this.find(`#${bare_id}`).val(new_val);
+        }
+        var buttons = $this.find(`#${bare_id}-buttons`);
+        $(buttons.find(':checked')).attr('checked', false);
+        $(buttons.find(`[value="${new_val}"]`)).attr('checked', true);
+        
+        locks[id_num] = false;
+    }
+    $this.find(`.sync`).change(optionsync);
+    function toggle_buttons() {
+        if ($(this).is(":checked")) {
+            setCookie(BUTTON_TAG, 'true');
+            $this.find(".options-select").hide();
+            $this.find(".options-buttons").show();
+        } else {
+            setCookie(BUTTON_TAG, 'false');
+            $this.find(".options-select").show();
+            $this.find(".options-buttons").hide();
+        }
+    }
+    if (getCookie(BUTTON_TAG) === 'true') {
+        $this.find(`#${BUTTON_TAG}`).click();
+    }
+    $this.find(`#${BUTTON_TAG}`).each(toggle_buttons).change(toggle_buttons);
+
 
     // calculate summary
     function summary() {

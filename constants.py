@@ -28,6 +28,7 @@ MODES = {
     ],
     "Users table": [
         Mode("interval-mode", "Interval mode", "i"),
-        Mode("weights", "Weights", "w")
+        Mode("weights", "Weights", "w"),
+        Mode("buttons", "Use buttons", "b")
     ]
 }

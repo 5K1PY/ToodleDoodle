@@ -1,4 +1,4 @@
-{% macro table_option_user(poll, form) -%}
+{% macro table_option_user(poll, form, AVAILABILITY) -%}
 <form method="post">
 {{ form.hidden_tag() }}
 <table class="table" id="options-users-table">
@@ -14,30 +14,48 @@
     <tr> <!-- Day + hour -->
         <th class="text-center">Name</th> <th></th>
         {% for option in poll.options %}
-            <th class="text-center align-middle" style="min-width: 75px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
+            <th class="text-center align-middle option-time" style="min-width: 75px;"> {{option.dayname}}&nbsp;{{option.day}}{{option.time if option.time else ""}}</th>
         {% endfor %}
         <th></th>
     </tr>
     <tr> <!-- Input -->
-        <td><div class="d-flex justify-content-center">
+        <td class="text-center align-middle"><div class="d-flex justify-content-center">
         {{form.name(
             placeholder="Your name",
             class_="form-control",
             style="min-width: 150px; max-width: 200px;")
         }}</div></td>
-        <th>
-            <div class="text-center">
+        <th class="text-center align-middle">
+            <div>
                 <button class="btn btn-primary" type="button" id="show-settings" data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings">
                     ⚙️
                 </button>
              </div>
         </th>
         {% for option in form.options %}
-        <td><div class="d-flex justify-content-center">
-            {{option(class_="form-control option-select text-center", style="max-width: 75px;")}}
-        </div></td>
+        <td>
+            <div class="d-flex justify-content-center">
+                {{option(
+                    class_="form-control options-select text-center sync",
+                    style="max-width: 75px;"
+                )}}
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="btn-group-vertical options-buttons sync" id="options-{{loop.index-1}}-buttons" role="group" aria-label="Vertical radio toggle button group">
+                    {% set optioni = loop.index-1 %}
+                    {% for icon in AVAILABILITY %}
+                        {% if loop.index == 1%}
+                        <input type="radio" class="btn-check" name="vbtn-radio{{optioni}}" id="vbtn-radio{{optioni}}-{{loop.index-1}}" autocomplete="off" value="{{icon}}" checked>
+                        {% else %}
+                        <input type="radio" class="btn-check" name="vbtn-radio{{optioni}}" id="vbtn-radio{{optioni}}-{{loop.index-1}}" autocomplete="off" value="{{icon}}">
+                        {% endif %}
+                        <label class="btn btn-outline-primary" for="vbtn-radio{{optioni}}-{{loop.index-1}}">{{icon}}</label>
+                    {% endfor %}
+                </div>
+            </div>
+        </td>
         {% endfor %}
-        <td><div class="text-center">{{form.submit(class_="btn btn-primary")}}</div></td>
+        <td class="text-center align-middle"><div>{{form.submit(class_="btn btn-primary")}}</div></td>
     </tr>
     {% for row in poll.rows %} <!-- Users -->
     <tr>
