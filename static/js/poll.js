@@ -47,7 +47,14 @@ $(function() {
 
     function transpose_tables() {
         toggleCookie(TRANSPOSE_TABLES_TAG);
-
+        $this.find('.options-buttons').each(function () {
+            var classes = $(this).attr('class');
+            if (classes.includes('btn-group-vertical')) {
+                $(this).attr('class', classes.replace('btn-group-vertical', 'btn-group'));
+            } else {
+                $(this).attr('class', classes.replace('btn-group', 'btn-group-vertical'));
+            }
+        })
         $this.find(".table").each(function () {
             var $table = $(this);
             var new_table = [];
