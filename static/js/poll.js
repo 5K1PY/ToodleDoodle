@@ -31,9 +31,13 @@ $(function() {
         var i = parseInt($(this).attr('id').match(/^options-(\d+)/)[1]);
         if ($this.find(`#${INTERVAL_MODE_TAG}`).is(":checked")) {
             if (i + 1 < options.length && options[i] === options[i+1]) {
-                enable_interval = false;
-                $this.find(`#options-${i+1}`).val(this.value).change();
-                enable_interval = true;
+                if (enable_interval) {
+                    enable_interval = false;
+                    $this.find(`#options-${i+1}`).val(this.value).change();
+                    enable_interval = true;
+                } else {
+                    $this.find(`#options-${i+1}`).val(this.value).change();
+                }
             }
         }
         options[i] = this.value;
@@ -118,7 +122,7 @@ $(function() {
     var enable_interval = true;
     // sync option between select menus and buttons
     function optionsync(ev) {
-        var match = $(this).attr('id').match(/^(options-(\d)+)/);
+        var match = $(this).attr('id').match(/^(options-(\d+))/);
         var [bare_id, id_num] = [match[1], match[2]];
         if (locks[id_num]) {
             return;
@@ -132,8 +136,7 @@ $(function() {
             $this.find(`#${bare_id}`).val(new_val);
         }
         var buttons = $this.find(`#${bare_id}-buttons`);
-        $(buttons.find(':checked')).attr('checked', false);
-        $(buttons.find(`[value="${new_val}"]`)).attr('checked', true);
+        $(buttons.find(`[value="${new_val}"]`)).click();
         
         locks[id_num] = false;
     }
