@@ -152,7 +152,7 @@ $(function() {
             $this.find(".options-buttons").hide();
         }
     }
-    if (getCookie(BUTTON_TAG) === 'true') {
+    if (getCookie(BUTTON_TAG) === 'true' || getCookie(BUTTON_TAG) === undefined) {
         $this.find(`#${BUTTON_TAG}`).click();
     }
     $this.find(`#${BUTTON_TAG}`).each(toggle_buttons).change(toggle_buttons);
