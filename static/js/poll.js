@@ -169,6 +169,8 @@ $(function() {
             }
             if (!isNaN(parseFloat(this.value))) {
                 weights[user_i] = parseFloat(this.value);
+            } else {
+                weights[user_i] = 1;
             }
         });
         // calculate availabilty
