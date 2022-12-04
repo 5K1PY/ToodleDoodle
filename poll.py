@@ -57,7 +57,7 @@ class Option:
     def __init__(self, option_id, text):
         self.text = text
         self.option_id = option_id
-        match = re.match("^(\d\d\d\d)-(\d\d)-(\d\d)( \d\d:\d\d)?$", text)
+        match = re.match("^(\d+)-(\d\d)-(\d\d)( \d\d:\d\d)?$", text)
         self.year, self.month, self.day, self.time = match.groups()
         self.year, self.month, self.day = map(int, (self.year, self.month, self.day))
         self.dayname = date(self.year, self.month, self.day).strftime("%a")
