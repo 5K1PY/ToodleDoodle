@@ -1,7 +1,7 @@
 import sqlite3
 import secrets
-from constants import AVAILABILITY
 
+from constants import AVAILABILITY
 from poll import Poll
 
 def db_operation(f):
