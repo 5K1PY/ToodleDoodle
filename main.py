@@ -4,13 +4,14 @@ from werkzeug.exceptions import abort
 from urllib.parse import unquote
 from constants import MODES
 
+from secret_config import SECRET_KEY
 from constants import AVAILABILITY
 from form import CreationForm, PollForm, EditForm, CloseForm
 from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db, close_poll_db
 from poll import gen_new_options, gen_edit_options
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'sosecret'
+app.config['SECRET_KEY'] = SECRET_KEY
 
 @app.route('/')
 def index():
@@ -129,5 +130,3 @@ def edit_poll(poll_id, poll):
 
 def closed_poll(poll_id, poll):
     return render_template("closed_poll.html", poll=poll)
-
-app.run(debug=True, use_debugger=False, use_reloader=True)

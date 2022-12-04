@@ -1,4 +1,5 @@
 todo
+secret_config.py
 *.pyc
 database.db
 database.db-journal
