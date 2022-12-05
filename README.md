@@ -19,4 +19,8 @@ python setup.py
 to create `secret_config.py` file.
 
 
-TODO: Running flask
+## Running
+To run the web server simply run in the main folder:
+```
+./flask run
+```
