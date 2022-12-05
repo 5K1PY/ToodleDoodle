@@ -5,7 +5,9 @@ Whole projects consists of several files. Main groups of them are:
  - `static/js` - Folder of JavaScript files for their respective pages.
 
 ## Build
-Only file for build is `setup.py`. It creates `secret_config` file. with flask `SECRET_KEY`.
+Only file for build is `setup.py`.
+It builds the project for running.
+
 ## Backend
 Files for backend and their purpose:
  - `main.py` - handling http request and communicating with all other modules

@@ -16,7 +16,7 @@ Then run
 ```
 python setup.py
 ```
-to create `secret_config.py` file.
+to create `secret_config.py` file and init database.
 
 
 ## Running

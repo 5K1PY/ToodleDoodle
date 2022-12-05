@@ -1,7 +1,3 @@
-DROP TABLE polls;
-DROP TABLE poll_options;
-DROP TABLE poll_data;
-
 CREATE TABLE polls (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
