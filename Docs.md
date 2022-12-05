@@ -4,6 +4,8 @@ Whole projects consists of several files. Main groups of them are:
  - `templates` - Folder of html files for pages.
  - `static/js` - Folder of JavaScript files for their respective pages.
 
+## Build
+Only file for build is `setup.py`. It creates `secret_config` file. with flask `SECRET_KEY`.
 ## Backend
 Files for backend and their purpose:
  - `main.py` - handling http request and communicating with all other modules
@@ -12,6 +14,7 @@ Files for backend and their purpose:
  - `db.py` - working with the database
  - `schema.sql` - database schema
  - `constants.py` - file with program constants
+ - `secret_config.py` - stores secret token
 
 ## Frontend
 Frontend files and what they are used for (`html` files are in `templates/` and `js`

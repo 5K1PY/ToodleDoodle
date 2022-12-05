@@ -12,4 +12,11 @@ For installing all of them simply run:
 pip install Flask Flask-WTF WTForms
 ```
 
+Then run 
+```
+python setup.py
+```
+to create `secret_config.py` file.
+
+
 TODO: Running flask
