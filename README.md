@@ -1,5 +1,5 @@
-# HippoMeet
-HippoMeet is web tool for arranging meeting. Built on Flask and JQuery. 
+# ToodleDoodle
+ToodleDoodle is web tool for arranging meeting. Built on Flask and JQuery. 
 
 ## Instalation
 The project uses following nonstandard python libaries:
