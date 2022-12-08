@@ -141,6 +141,7 @@ $(function() {
         locks[id_num] = false;
     }
     $this.find(`.sync`).change(optionsync);
+    $this.find(`.options-select`).each(optionsync);
     function toggle_buttons() {
         if ($(this).is(":checked")) {
             setCookie(BUTTON_TAG, 'true');
