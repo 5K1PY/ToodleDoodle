@@ -1,17 +1,25 @@
-import sqlite3
+import psycopg2
 import secrets
+from config import HOST, DATABASE, USER, PASSWORD
 
 from constants import AVAILABILITY
 from poll import Poll
 
 def db_operation(f):
     def g(*args, **kwargs):
-        connection = sqlite3.connect('database.db')
-        connection.execute('PRAGMA foreign_keys = ON')
+        connection = psycopg2.connect(
+                host=HOST,
+                database=DATABASE,
+                user=USER,
+                password=PASSWORD
+        )
+        cur = connection.cursor()
+        # cur.execute('PRAGMA foreign_keys = ON')
 
-        value = f(connection, *args, **kwargs)
+        value = f(cur, *args, **kwargs)
 
         connection.commit()
+        cur.close()
         connection.close()
         return value
     return g
@@ -20,7 +28,7 @@ def db_operation(f):
 @db_operation
 def init(connection):
     with open('schema.sql') as f:
-        connection.executescript(f.read())
+        connection.execute(f.read())
 
 
 @db_operation
@@ -28,19 +36,20 @@ def make_poll(connection, name, description, options):
     same_secrets = True
     while same_secrets:
         secret = secrets.token_urlsafe(16)
-        same_secrets = connection.execute(
-            'SELECT id FROM polls WHERE id=?;',
+        connection.execute(
+            'SELECT id FROM polls WHERE id=%s;',
             (secret,)
-        ).fetchall()
+        )
+        same_secrets = connection.fetchall()
 
     connection.execute(
-        'INSERT INTO polls VALUES (?, ?, ?, "FALSE");',
+        'INSERT INTO polls VALUES (%s, %s, %s, FALSE);',
         (secret, name, description)
     )
     for option in options:
         connection.execute(
-            """INSERT INTO poll_options(poll_id, option)
-            VALUES (?, ?);""",
+            """INSERT INTO poll_options(poll_id, poll_option)
+            VALUES (%s, %s);""",
             (secret, option)
         )
 
@@ -49,61 +58,64 @@ def make_poll(connection, name, description, options):
 
 @db_operation
 def poll_exists(connection, id):
-    return len(connection.execute(
-        'SELECT id FROM polls WHERE id=?;',
+    connection.execute(
+        'SELECT id FROM polls WHERE id=%s;',
         (id,)
-    ).fetchall()) > 0
+    )
+    return len(connection.fetchall()) > 0
 
 
 @db_operation
 def read_poll(connection, poll_id):
-    name, description, closed = connection.execute(
-        'SELECT title, description, closed FROM polls WHERE id=?',
+    connection.execute(
+        'SELECT title, description, closed FROM polls WHERE id=%s',
         (poll_id,)
-    ).fetchall()[0]
-
-    options = connection.execute(
-        'SELECT id, option FROM poll_options WHERE poll_id=?',
+    )
+    name, description, closed = connection.fetchall()[0]
+    connection.execute(
+        'SELECT id, poll_option FROM poll_options WHERE poll_id=%s',
         (poll_id,)
-    ).fetchall()
-
-    users = connection.execute(
-        """SELECT poll_data.user FROM poll_options
-        JOIN poll_data ON poll_options.id==poll_data.poll_option_id
-        WHERE poll_options.poll_id=?
-        GROUP BY poll_data.user
-        ORDER BY poll_data.user;
+    )
+    options = connection.fetchall()
+    connection.execute(
+        """SELECT poll_data.username FROM poll_options
+        JOIN poll_data ON poll_options.id=poll_data.poll_option_id
+        WHERE poll_options.poll_id=%s
+        GROUP BY poll_data.username
+        ORDER BY poll_data.username;
         """,
         (poll_id,)
-    ).fetchall()
+    )
+    users = connection.fetchall()
 
-    entries = (connection.execute(
-        """SELECT poll_options.id, poll_data.user, poll_data.entry FROM poll_options
-        JOIN poll_data ON poll_options.id==poll_data.poll_option_id
-        WHERE poll_options.poll_id=?;
+    connection.execute(
+        """SELECT poll_options.id, poll_data.username, poll_data.entry FROM poll_options
+        JOIN poll_data ON poll_options.id=poll_data.poll_option_id
+        WHERE poll_options.poll_id=%s;
         """,
         (poll_id,)
-    ).fetchall())
-
+    )
+    entries = connection.fetchall()
     return Poll(name, description, closed, options, users, entries)
 
 @db_operation
 def write_poll(connection, name, option_ids, choices):
     for option_id, choice in zip(option_ids, choices):
         connection.execute(
-            """INSERT INTO poll_data(poll_option_id, user, entry)
-            VALUES (?, ?, ?)""",
+            """INSERT INTO poll_data(poll_option_id, username, entry)
+            VALUES (%s, %s, %s)""",
             (option_id, name, AVAILABILITY.index(choice))
         )
 
 @db_operation
 def user_filled_poll(connection, poll_id, user):
-    return len(connection.execute(
+    connection.execute(
         """SELECT * FROM poll_data
         INNER JOIN poll_options ON poll_data.poll_option_id=poll_options.id
-        WHERE poll_options.poll_id=? AND poll_data.user=?""",
+        WHERE poll_options.poll_id=%s AND poll_data.username=%s""",
         (poll_id, user),
-    ).fetchall()) > 0
+    )
+    return len(connection.fetchall()) > 0
 
 @db_operation
 def delete_user_from_poll(connection, poll_id, user):
@@ -112,7 +124,7 @@ def delete_user_from_poll(connection, poll_id, user):
         WHERE id IN (
             SELECT poll_data.id FROM poll_data
             INNER JOIN poll_options ON poll_data.poll_option_id=poll_options.id
-            WHERE poll_options.poll_id=? AND poll_data.user=?
+            WHERE poll_options.poll_id=%s AND poll_data.username=%s
         )""",
         (poll_id, user),
     )
@@ -120,14 +132,15 @@ def delete_user_from_poll(connection, poll_id, user):
 @db_operation
 def edit_poll_db(connection, poll_id, description, new_options):
     connection.execute(
-        "UPDATE polls SET description=? WHERE id=?",
+        "UPDATE polls SET description=%s WHERE id=%s",
         (description, poll_id)
     )
-    options = connection.execute(
-        """SELECT option FROM poll_options WHERE poll_id=?
-        ORDER BY option""",
+    connection.execute(
+        """SELECT poll_option FROM poll_options WHERE poll_id=%s
+        ORDER BY poll_option""",
         (poll_id,)
-    ).fetchall()
+    )
+    options = connection.fetchall()
     options = list(map(lambda x: x[0], options))
     new_options.sort()
 
@@ -135,13 +148,13 @@ def edit_poll_db(connection, poll_id, description, new_options):
     while (i < len(options) or j < len(new_options)):
         if i < len(options) and (j == len(new_options) or options[i] < new_options[j]):
             connection.execute(
-                "DELETE FROM poll_options WHERE poll_id=? AND option=?",
+                "DELETE FROM poll_options WHERE poll_id=%s AND poll_option=%s",
                 (poll_id, options[i])
-            ).fetchall()
+            )
             i += 1
         elif i == len(options) or options[i] > new_options[j]:
             connection.execute(
-                "INSERT INTO poll_options(poll_id, option) VALUES (?, ?);",
+                "INSERT INTO poll_options(poll_id, poll_option) VALUES (%s, %s);",
                 (poll_id, new_options[j])
             )
             j += 1
@@ -153,17 +166,18 @@ def edit_poll_db(connection, poll_id, description, new_options):
 @db_operation
 def close_poll_db(connection, poll_id, final_option):
     connection.execute(
-        'UPDATE polls SET closed="TRUE" WHERE id=?',
+        'UPDATE polls SET closed=TRUE WHERE id=%s',
         (poll_id,)
     )
 
-    final_option_id = connection.execute(
-        'SELECT id FROM poll_options WHERE poll_id=? AND option=?',
+    connection.execute(
+        'SELECT id FROM poll_options WHERE poll_id=%s AND poll_option=%s',
         (poll_id, final_option)
-    ).fetchall()[0][0]
+    )
+    final_option_id = connection.fetchall()[0][0]
 
     connection.execute(
-        'DELETE FROM poll_options WHERE poll_id=? AND id!=?',
+        'DELETE FROM poll_options WHERE poll_id=%s AND id!=%s',
         (poll_id, final_option_id)
     )
 
