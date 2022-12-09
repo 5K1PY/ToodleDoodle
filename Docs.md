@@ -16,7 +16,7 @@ Files for backend and their purpose:
  - `db.py` - working with the database
  - `schema.sql` - database schema
  - `constants.py` - file with program constants
- - `secret_config.py` - stores secret token
+ - `config.py` - stores secret token and database access data
 
 ## Frontend
 Frontend files and what they are used for (`html` files are in `templates/` and `js`
