@@ -9,4 +9,4 @@ with open("config.py", "w") as f:
     f.write(f'PASSWORD = "{input("PASSWORD: ")}"\n')
 
 import db
-# db.init()
+db.init()
