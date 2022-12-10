@@ -9,7 +9,7 @@ def db_operation(f):
     def g(*args, **kwargs):
         connection = psycopg2.connect(
                 host=HOST,
-                database=DATABASE,
+                dbname=DATABASE,
                 user=USER,
                 password=PASSWORD
         )
