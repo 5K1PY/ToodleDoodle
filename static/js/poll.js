@@ -1,4 +1,4 @@
-var pollReady = false;
+var pollViewActive = true;
 $(function() {
     var $this = $(this);
 
@@ -44,10 +44,8 @@ $(function() {
         options[i] = this.value;
     }
     $this.find('.options-select').change(interaval_update);
-    $this.find(`#${INTERVAL_MODE_TAG}`).change(() => toggleCookie(INTERVAL_MODE_TAG));
 
     function transpose_tables() {
-        toggleCookie(TRANSPOSE_TABLES_TAG);
         $this.find('.options-buttons').each(function () {
             var classes = $(this).attr('class');
             if (classes.includes('btn-group-vertical')) {
@@ -94,7 +92,6 @@ $(function() {
 
     // show / hide weights
     function toggle_weights() {
-        toggleCookie(WEIGHTS_TAG);
         if (getCookie(WEIGHTS_TAG) === 'true') {
             setCookie(WEIGHTS_TAG, 'true');
             $this.find(".edit-button").hide();
@@ -135,7 +132,6 @@ $(function() {
     $this.find(`.sync`).change(optionsync);
     $this.find(`.options-select`).each(optionsync);
     function toggle_buttons() {
-        toggleCookie(BUTTON_TAG);
         if (getCookie(BUTTON_TAG) === 'true') {
             console.log('Buttons')
             $this.find(".options-select").hide();
@@ -226,5 +222,4 @@ $(function() {
             setCookie(cname, 'true');
         }
     }
-    pollReady = true;
 });
