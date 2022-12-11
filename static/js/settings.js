@@ -13,20 +13,22 @@ $(function() {
     };
 
     if (getCookie(INTERVAL_MODE_TAG) === 'true') {
-        $this.find(`#${INTERVAL_MODE_TAG}`).click();
         toggleCookie(INTERVAL_MODE_TAG);
+        $this.find(`#${INTERVAL_MODE_TAG}`).click();
     }
 
     if (getCookie(TRANSPOSE_TABLES_TAG) === 'true') {
-        $this.find(`#${TRANSPOSE_TABLES_TAG}`).click();
         toggleCookie(TRANSPOSE_TABLES_TAG);
+        $this.find(`#${TRANSPOSE_TABLES_TAG}`).click();
     }
 
     if (getCookie(WEIGHTS_TAG) === 'true') {
+        toggleCookie(WEIGHTS_TAG);
         $this.find(`#${WEIGHTS_TAG}`).click();
     }
 
     if (getCookie(BUTTON_TAG) === 'true' || getCookie(BUTTON_TAG) === undefined) {
+        toggleCookie(BUTTON_TAG);
         $this.find(`#${BUTTON_TAG}`).click();
     }
 

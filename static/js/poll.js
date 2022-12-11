@@ -1,3 +1,4 @@
+var pollReady = false;
 $(function() {
     var $this = $(this);
 
@@ -93,7 +94,8 @@ $(function() {
 
     // show / hide weights
     function toggle_weights() {
-        if ($(this).is(":checked")) {
+        toggleCookie(WEIGHTS_TAG);
+        if (getCookie(WEIGHTS_TAG) === 'true') {
             setCookie(WEIGHTS_TAG, 'true');
             $this.find(".edit-button").hide();
             $this.find(".delete-button").hide();
@@ -105,7 +107,8 @@ $(function() {
             $this.find(".weight").hide();
         }
     }
-    $this.find(`#${WEIGHTS_TAG}`).each(toggle_weights).change(toggle_weights);
+    $this.find(".weight").hide();
+    $this.find(`#${WEIGHTS_TAG}`).change(toggle_weights);
 
     var locks = Array($this.find(".option-time").length).fill(false);
     var enable_interval = true;
@@ -132,18 +135,19 @@ $(function() {
     $this.find(`.sync`).change(optionsync);
     $this.find(`.options-select`).each(optionsync);
     function toggle_buttons() {
-        if ($(this).is(":checked")) {
-            setCookie(BUTTON_TAG, 'true');
+        toggleCookie(BUTTON_TAG);
+        if (getCookie(BUTTON_TAG) === 'true') {
+            console.log('Buttons')
             $this.find(".options-select").hide();
             $this.find(".options-buttons").show();
         } else {
-            setCookie(BUTTON_TAG, 'false');
+            console.log('Menus')
             $this.find(".options-select").show();
             $this.find(".options-buttons").hide();
         }
     }
-    $this.find(`#${BUTTON_TAG}`).each(toggle_buttons).change(toggle_buttons);
-
+    $this.find(".options-buttons").hide();
+    $this.find(`#${BUTTON_TAG}`).change(toggle_buttons);
 
     // calculate summary
     function summary() {
@@ -222,4 +226,5 @@ $(function() {
             setCookie(cname, 'true');
         }
     }
+    pollReady = true;
 });
