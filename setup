@@ -1,4 +1,4 @@
 #!/bin/sh
 pip install Flask Flask-WTF WTForms psycopg2-binary
 
-python ./setup.py
+python ./setup_app.py
