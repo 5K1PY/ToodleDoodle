@@ -92,13 +92,11 @@ $(function() {
 
     // show / hide weights
     function toggle_weights() {
-        if (getCookie(WEIGHTS_TAG) === 'true') {
-            setCookie(WEIGHTS_TAG, 'true');
+        if ($this.find(`#${WEIGHTS_TAG}`).is(":checked")) {
             $this.find(".edit-button").hide();
             $this.find(".delete-button").hide();
             $this.find(".weight").show();
         } else {
-            setCookie(WEIGHTS_TAG, 'false');
             $this.find(".edit-button").show();
             $this.find(".delete-button").show();
             $this.find(".weight").hide();
@@ -132,7 +130,7 @@ $(function() {
     $this.find(`.sync`).change(optionsync);
     $this.find(`.options-select`).each(optionsync);
     function toggle_buttons() {
-        if (getCookie(BUTTON_TAG) === 'true') {
+        if ($this.find(`#${BUTTON_TAG}`).is(":checked")) {
             console.log('Buttons')
             $this.find(".options-select").hide();
             $this.find(".options-buttons").show();
@@ -200,26 +198,4 @@ $(function() {
     }
     summary();
     $this.find('.weight-input').bind('input', summary);
-
-    // cookies
-    function getCookie(cname) {
-        var cookies = document.cookie;
-        var parts = cookies.split(`${cname}=`);
-        if (parts.length > 1) {
-            return parts[1].split(';')[0];
-        } else {
-            return undefined;
-        }
-    }
-    function setCookie(cname, val) {
-        document.cookie = `${cname}=${val}; path=/`;
-    }
-    function toggleCookie(cname) {
-        var val = getCookie(cname);
-        if (val === 'true') {
-            setCookie(cname, 'false');
-        } else {
-            setCookie(cname, 'true');
-        }
-    }
 });
