@@ -1,11 +1,11 @@
 ## Overview
-Whole projects consists of several files. Main groups of them are:
+Whole project consists of several files. Main groups of them are:
  - `.py` files - Run the server-side part.
  - `templates` - Folder of html files for pages.
  - `static/js` - Folder of JavaScript files for their respective pages.
 
 ## Build
-Only file for build is `setup.py`.
+Only file for build is `setup_app.py`.
 It builds the project for running.
 
 ## Backend
@@ -22,9 +22,19 @@ Files for backend and their purpose:
 Frontend files and what they are used for (`html` files are in `templates/` and `js`
 in `static/js`):
  - `base.html` and `base.js` - Files used by all pages (non-changing code such as top bar or nojs warning)
+ - `settings.js` - handles settings hotkeys
+ and synchronises them with cookies 
  - `index.html` - Welcome page
  - `new_poll.html` and `new_poll.js` - Page for creating poll
  - `poll.html` and `poll.js` - Poll page
  - `poll_formats.html` - Various poll formats for poll page
  - `edit_poll.html` and `edit_poll.js` - Page for editng poll
  - `closed_poll` - Page of a closed poll 
+
+## Database
+The project uses PostgreSQL database. In the
+database are stored following tables:
+ - Polls - table of all polls
+ - Poll_options - stores options for each poll
+ - Poll_data - stores filled-in availabilty of
+ users in particular poll
