@@ -18,27 +18,6 @@
     {{pf.table_option_user(poll, form, AVAILABILITY)}}
     </div>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="settings" aria-labelledby="settingsLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="settingsLabel">Settings</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body mb-2">
-            {% for category in modes %}
-                <h4>{{category}}</h4>
-                {% for mode in modes[category] %}
-                <div class="d-flex justify-content-between mb-1">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="{{mode.id}}">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">{{mode.name}}</label>
-                    </div>
-                    <kbd>{{mode.key}}</kbd>
-                </div>
-                {% endfor %}
-            {% endfor %}
-        </div>
-    </div>
-
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true" data-bs-backdrop="false">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="offcanvasRightLabel">Choose final time</h5>

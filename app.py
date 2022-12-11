@@ -15,7 +15,7 @@ app.config.from_object(config)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', modes=MODES)
 
 
 @app.route('/new_poll', methods=['GET', 'POST'])
@@ -28,7 +28,7 @@ def new_poll():
         secret = make_poll(poll_name, description, poll_options)
         return redirect(f'/poll/{secret}')
 
-    return render_template('new_poll.html', form=form, errors=form.error_message)
+    return render_template('new_poll.html', form=form, errors=form.error_message, modes=MODES)
 
 
 def set_form_values(form, name, options):
@@ -126,7 +126,7 @@ def edit_poll(poll_id, poll):
         else:
             errors = form.errors
 
-    return render_template("edit_poll.html", form=form, errors=errors)
+    return render_template("edit_poll.html", form=form, errors=errors, modes=MODES)
 
 def closed_poll(poll_id, poll):
-    return render_template("closed_poll.html", poll=poll)
+    return render_template("closed_poll.html", poll=poll, modes=MODES)
