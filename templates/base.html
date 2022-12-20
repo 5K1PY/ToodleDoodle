@@ -55,9 +55,9 @@
     </div>
 
     <div class="container">
-        <div class="alert alert-danger mt-3" role="alert" id="no-js">
+        <noscript><div class="alert alert-danger mt-3" role="alert" id="no-js">
           This page uses javascript. Without it some functionality will not work.
-        </div>
+        </div></noscript>
         <script src="{{ url_for('static', filename='js/base.js') }}"></script>
         
         {% if errors is not none and errors %}
