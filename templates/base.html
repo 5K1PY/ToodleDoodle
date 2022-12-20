@@ -18,17 +18,19 @@
     <nav class="navbar navbar-expand-sm bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="{{url_for('index')}}">ToodleDoodle</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-link active" aria-current="page" href="{{url_for('new_poll')}}">New poll</a> 
           </div>
         </div>
-            <button id="show-settings" class="btn btn-outline-secondary d-flex" type="button" data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings">
-              ⚙
-            </button>
+        <div class="d-flex">
+          <button id="show-settings" class="btn btn-outline-secondary d-flex me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings">
+            ⚙
+          </button>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
       </div>
     </nav>
 
