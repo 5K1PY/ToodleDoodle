@@ -31,6 +31,18 @@ in `static/js`):
  - `edit_poll.html` and `edit_poll.js` - Page for editing poll
  - `closed_poll` - Page of a closed poll 
 
+## User - server communication
+User communicates with server by one of two ways:
+ - query part of url (for simple operation or preparing to do an operation):
+    - preparing to edit an entry
+    - deleting a poll entry
+    - preparing to edit poll
+    - reopening poll
+ - html forms:
+    - creating / editing a table
+    - filling / editing in a poll entry
+    - closing poll
+
 ## Database
 The project uses PostgreSQL database. In the
 database are stored following tables:
