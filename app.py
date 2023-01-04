@@ -1,5 +1,5 @@
 from datetime import date, time
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, g
 from werkzeug.exceptions import abort
 from urllib.parse import unquote
 from constants import MODES
@@ -7,11 +7,21 @@ from constants import MODES
 import config
 from constants import AVAILABILITY
 from form import CreationForm, PollForm, EditForm, CloseForm
-from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db, close_poll_db, reopen_poll
+from db import DB
 from poll import gen_new_options, gen_edit_options
 
 app = Flask(__name__)
 app.config.from_object(config)
+
+@app.before_request
+def before():
+    g.db = DB()
+
+@app.after_request
+def after(response):
+    g.db.close()
+    return response
+
 
 @app.route('/')
 def index():
@@ -25,7 +35,7 @@ def new_poll():
         poll_name = form.poll_title.data
         description = form.description.data
         poll_options = gen_new_options(form.options.data)
-        secret = make_poll(poll_name, description, poll_options)
+        secret = g.db.make_poll(poll_name, description, poll_options)
         return redirect(f'/poll/{secret}')
 
     return render_template('new_poll.html', form=form, errors=form.error_message, modes=MODES)
@@ -40,10 +50,10 @@ def set_form_values(form, name, options):
 
 @app.route('/poll/<string:poll_id>/', methods=['GET', 'POST'])
 def get_poll(poll_id):
-    if not poll_exists(poll_id):
+    if not g.db.poll_exists(poll_id):
         return abort(404)
 
-    poll = read_poll(poll_id)
+    poll = g.db.read_poll(poll_id)
     form = PollForm()
     closeForm = CloseForm()
     if len(form.options) == 0:
@@ -58,13 +68,13 @@ def get_poll(poll_id):
     query = request.query_string.decode('utf-8').split("=", 1)
 
     if query[0] == "reopen":
-        reopen_poll(poll_id)
-        poll = read_poll(poll_id)
+        g.db.reopen_poll(poll_id)
+        poll = g.db.read_poll(poll_id)
         
     # poll closed / closing
     if closeForm.validate_on_submit():
-        close_poll_db(poll_id, closeForm.options.data)
-        poll = read_poll(poll_id)
+        g.db.close_poll_db(poll_id, closeForm.options.data)
+        poll = g.db.read_poll(poll_id)
     if poll.closed is not None:
         return closed_poll(poll_id, poll)
 
@@ -75,12 +85,12 @@ def get_poll(poll_id):
     # editing / deleting users
     if query[0] == "edituser":
         user = unquote(query[1])
-        if not user_filled_poll(poll_id, user):
+        if not g.db.user_filled_poll(poll_id, user):
             return abort(400)
         else:
             if form.validate_on_submit():
-                delete_user_from_poll(poll_id, user)
-                write_poll(
+                g.db.delete_user_from_poll(poll_id, user)
+                g.db.write_poll(
                     form.name.data,
                     map(lambda x: x.option_id, poll.options),
                     form.options.data
@@ -92,17 +102,17 @@ def get_poll(poll_id):
 
     elif query[0] == "delete":
         user = unquote(query[1])
-        if not user_filled_poll(poll_id, user):
+        if not g.db.user_filled_poll(poll_id, user):
             return abort(400)
         else:
-            delete_user_from_poll(poll_id, user)
+            g.db.delete_user_from_poll(poll_id, user)
             return redirect(".")
 
     if form.validate_on_submit():
-        if user_filled_poll(poll_id, form.name.data):
+        if g.db.user_filled_poll(poll_id, form.name.data):
             errors = "User already filled in the poll."
         else:
-            write_poll(
+            g.db.write_poll(
                 form.name.data,
                 map(lambda x: x.option_id, poll.options),
                 form.options.data
@@ -126,7 +136,7 @@ def edit_poll(poll_id, poll):
     errors = ""
     if request.method == "POST":
         if form.validate_on_submit():
-            edit_poll_db(poll_id, form.description.data, gen_edit_options(form.options.data))
+            g.db.edit_poll_db(poll_id, form.description.data, gen_edit_options(form.options.data))
             return redirect(".")
         else:
             errors = form.errors
