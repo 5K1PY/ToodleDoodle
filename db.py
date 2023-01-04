@@ -183,6 +183,12 @@ def close_poll_db(connection, poll_id, final_option):
         (final_option_id, poll_id,)
     )
 
+@db_operation
+def reopen_poll(connection, poll_id):
+    connection.execute(
+        'UPDATE polls SET closed=NULL WHERE id=%s',
+        (poll_id,)
+    )
 
 if __name__ == "__main__":
     # don't run this accidentally

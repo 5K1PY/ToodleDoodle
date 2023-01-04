@@ -7,7 +7,7 @@ from constants import MODES
 import config
 from constants import AVAILABILITY
 from form import CreationForm, PollForm, EditForm, CloseForm
-from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db, close_poll_db
+from db import make_poll, poll_exists, read_poll, user_filled_poll, write_poll, delete_user_from_poll, edit_poll_db, close_poll_db, reopen_poll
 from poll import gen_new_options, gen_edit_options
 
 app = Flask(__name__)
@@ -55,6 +55,12 @@ def get_poll(poll_id):
 
     errors = ""
 
+    query = request.query_string.decode('utf-8').split("=", 1)
+
+    if query[0] == "reopen":
+        reopen_poll(poll_id)
+        poll = read_poll(poll_id)
+        
     # poll closed / closing
     if closeForm.validate_on_submit():
         close_poll_db(poll_id, closeForm.options.data)
@@ -63,7 +69,6 @@ def get_poll(poll_id):
         return closed_poll(poll_id, poll)
 
     # editing poll
-    query = request.query_string.decode('utf-8').split("=", 1)
     if query[0] == "edit":
         return edit_poll(poll_id, poll)
 
