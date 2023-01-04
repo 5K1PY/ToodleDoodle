@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import secrets
 
 with open("config.py", "w") as f:
@@ -8,5 +9,5 @@ with open("config.py", "w") as f:
     f.write(f'USER = "{input("USER: ")}"\n')
     f.write(f'PASSWORD = "{input("PASSWORD: ")}"\n')
 
-import db
-db.init()
+from db import DB
+DB().init()
