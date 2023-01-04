@@ -90,7 +90,7 @@ class Poll:
         for option_id, user, entry in entries:
             self.rows[user_key[user]][1][option_key[option_id]] = AVAILABILITY[entry]
 
-    def diffrent_than_last(self, i):
+    def different_than_last(self, i):
         return (i == 0) or (self.options[i-1].year_and_month() != self.options[i].year_and_month())
 
     def next_year_and_month(self, i):

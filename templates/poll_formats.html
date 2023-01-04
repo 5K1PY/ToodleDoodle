@@ -5,7 +5,7 @@
     <tr> <!-- Month + Year -->
         <th></th> <th></th>
         {% for option in poll.options %}
-            {% if poll.diffrent_than_last(loop.index-1) %}
+            {% if poll.different_than_last(loop.index-1) %}
             <th class="text-center align-middle" colspan="{{poll.next_year_and_month(loop.index-1)}}"> {{option.year_and_month()}} </th>
             {% endif %}
         {% endfor %}

@@ -4,7 +4,7 @@ $(function() {
 
     // constants
     const AVAILABLE = "✅";
-    const NOT_PREFERED = "(✔️)";
+    const NOT_PREFERRED = "(✔️)";
 
     const TRANSPOSE_TABLES_TAG = 'transpose-tables';
     const INTERVAL_MODE_TAG = 'interval-mode';
@@ -28,7 +28,7 @@ $(function() {
     }
 
     // interval mode
-    function interaval_update() {
+    function interval_update() {
         var i = parseInt($(this).attr('id').match(/^options-(\d+)/)[1]);
         if ($this.find(`#${INTERVAL_MODE_TAG}`).is(":checked")) {
             if (i + 1 < options.length && options[i] === options[i+1]) {
@@ -43,7 +43,7 @@ $(function() {
         }
         options[i] = this.value;
     }
-    $this.find('.options-select').change(interaval_update);
+    $this.find('.options-select').change(interval_update);
 
     function transpose_tables() {
         $this.find('.options-buttons').each(function () {
@@ -118,7 +118,7 @@ $(function() {
 
         var new_val = (this.value || $(this).find(':checked').next().text());
         if (enable_interval) {
-            $this.find(`#${bare_id}`).val(new_val).each(interaval_update);
+            $this.find(`#${bare_id}`).val(new_val).each(interval_update);
         } else {
             $this.find(`#${bare_id}`).val(new_val);
         }
@@ -158,7 +158,7 @@ $(function() {
                 weights[user_i] = 1;
             }
         });
-        // calculate availabilty
+        // calculate availability
         var totals = [];
         $this.find('.availability').each(function() {
             var m = this.id.match(/^availability-(\d+)-(\d+)$/);
@@ -169,7 +169,7 @@ $(function() {
             if (weights.length > user_i) {
                 if ($(this).text().includes(AVAILABLE))
                     totals[option_i][0] += weights[user_i];
-                else if ($(this).text().includes(NOT_PREFERED))
+                else if ($(this).text().includes(NOT_PREFERRED))
                     totals[option_i][1] += weights[user_i];
             }
         });

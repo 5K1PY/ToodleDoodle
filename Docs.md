@@ -23,12 +23,12 @@ Frontend files and what they are used for (`html` files are in `templates/` and 
 in `static/js`):
  - `base.html` and `base.js` - Files used by all pages (non-changing code such as top bar or nojs warning)
  - `settings.js` - handles settings hotkeys
- and synchronises them with cookies
+ and synchronizes them with cookies
  - `index.html` - Welcome page
  - `new_poll.html` and `new_poll.js` - Page for creating poll
  - `poll.html` and `poll.js` - Poll page
  - `poll_formats.html` - Various poll formats for poll page
- - `edit_poll.html` and `edit_poll.js` - Page for editng poll
+ - `edit_poll.html` and `edit_poll.js` - Page for editing poll
  - `closed_poll` - Page of a closed poll 
 
 ## Database

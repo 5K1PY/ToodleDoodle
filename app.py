@@ -67,7 +67,7 @@ def get_poll(poll_id):
     if query[0] == "edit":
         return edit_poll(poll_id, poll)
 
-    # edditing / deleting users
+    # editing / deleting users
     if query[0] == "edituser":
         user = unquote(query[1])
         if not user_filled_poll(poll_id, user):
