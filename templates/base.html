@@ -48,8 +48,9 @@
                   <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="{{mode.id}}">
                     <label class="form-check-label" for="flexSwitchCheckDefault">{{mode.name}}</label>
+                  {% if mode.description != "" %}<ul><li>{{mode.description}}</li></ul> {% endif %}
                   </div>
-                  <kbd>{{mode.key}}</kbd>
+                  <p><kbd>{{mode.key}}</kbd></p>
                 </div>
               {% endfor %}
           {% endfor %}

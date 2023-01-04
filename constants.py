@@ -21,14 +21,14 @@ AVAILABILITY_WITH_TEXT = [
 DEFAULT_AVAILABILITY = UNKNOWN
 
 # change this also in poll.js
-Mode = namedtuple("Mode", ("id", "name", "key"))
+Mode = namedtuple("Mode", ("id", "name", "key", "description"))
 MODES = {
     "": [
-        Mode("transpose-tables", "Transpose tables", "t")
+        Mode("transpose-tables", "Transpose tables", "t", "")
     ],
     "Users table": [
-        Mode("interval-mode", "Interval mode", "i"),
-        Mode("weights", "Weights", "w"),
-        Mode("buttons", "Use buttons", "b")
+        Mode("interval-mode", "Interval mode", "i", "Change multiple days at once"),
+        Mode("weights", "Weights", "w", "Set importance for each user. (Importance is only visible to you.)"),
+        Mode("buttons", "Use buttons", "b", "Use select menus / buttons.")
     ]
 }
