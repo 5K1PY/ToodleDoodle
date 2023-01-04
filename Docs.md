@@ -43,6 +43,8 @@ User communicates with server by one of two ways:
     - filling / editing in a poll entry
     - closing poll
 
+Additionally preferred active modes of the poll (such as transposed table or interval mode) are stored in cookies.
+
 ## Database
 The project uses PostgreSQL database. In the
 database are stored following tables:
@@ -50,3 +52,11 @@ database are stored following tables:
  - `poll_options` - stores options for each poll
  - `poll_data` - stores filled-in availability of
  users in particular poll
+
+## Libraries
+The project uses following nonstandard python libraries:
+ - [Flask](https://flask.palletsprojects.com/) for running the server 
+ - [WTForms](https://wtforms.readthedocs.io/) for easier handling of forms
+ - [Flask-WTF](https://flask-wtf.readthedocs.io/) for integration between Flask and WTForms
+ in flask
+ - [psycopg2-binary] for PostgeSQL database
