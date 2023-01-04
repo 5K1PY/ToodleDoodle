@@ -30,6 +30,13 @@ def init(connection):
     with open('schema.sql') as f:
         connection.execute(f.read())
 
+@db_operation
+def clear(connection):
+    connection.execute("""
+        DROP TABLE polls CASCADE;
+        DROP TABLE poll_options CASCADE;
+        DROP TABLE poll_data CASCADE;
+    """)
 
 @db_operation
 def make_poll(connection, name, description, options):
@@ -43,7 +50,7 @@ def make_poll(connection, name, description, options):
         same_secrets = connection.fetchall()
 
     connection.execute(
-        'INSERT INTO polls VALUES (%s, %s, %s, FALSE);',
+        'INSERT INTO polls VALUES (%s, %s, %s, NULL);',
         (secret, name, description)
     )
     for option in options:
@@ -166,23 +173,19 @@ def edit_poll_db(connection, poll_id, description, new_options):
 @db_operation
 def close_poll_db(connection, poll_id, final_option):
     connection.execute(
-        'UPDATE polls SET closed=TRUE WHERE id=%s',
-        (poll_id,)
-    )
-
-    connection.execute(
         'SELECT id FROM poll_options WHERE poll_id=%s AND poll_option=%s',
         (poll_id, final_option)
     )
     final_option_id = connection.fetchall()[0][0]
-
+    
     connection.execute(
-        'DELETE FROM poll_options WHERE poll_id=%s AND id!=%s',
-        (poll_id, final_option_id)
+        'UPDATE polls SET closed=%s WHERE id=%s',
+        (final_option_id, poll_id,)
     )
 
 
 if __name__ == "__main__":
     # don't run this accidentally
+    # clear()
     # init()
     pass

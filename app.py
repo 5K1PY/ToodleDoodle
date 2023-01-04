@@ -59,7 +59,7 @@ def get_poll(poll_id):
     if closeForm.validate_on_submit():
         close_poll_db(poll_id, closeForm.options.data)
         poll = read_poll(poll_id)
-    if poll.closed == True:
+    if poll.closed is not None:
         return closed_poll(poll_id, poll)
 
     # editing poll

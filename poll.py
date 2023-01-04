@@ -89,6 +89,10 @@ class Poll:
         self.rows = [[user, [DEFAULT_AVAILABILITY]*(len(self.options))] for user in self.users]
         for option_id, user, entry in entries:
             self.rows[user_key[user]][1][option_key[option_id]] = AVAILABILITY[entry]
+        
+        if self.closed is not None:
+            self.final_option_i = option_key[self.closed]
+            self.final_option = self.options[self.final_option_i]
 
     def different_than_last(self, i):
         return (i == 0) or (self.options[i-1].year_and_month() != self.options[i].year_and_month())
@@ -108,7 +112,7 @@ class Poll:
         lines = []
         users = {a: [] for a in AVAILABILITY}
         for row in self.rows:
-            users[row[1][0]].append(row[0])
+            users[row[1][self.final_option_i]].append(row[0])
         for icon, description in AVAILABILITY_WITH_TEXT:
             if len(users[icon]):
                 lines.append([])

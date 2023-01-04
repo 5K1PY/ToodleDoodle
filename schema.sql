@@ -2,7 +2,7 @@ CREATE TABLE polls (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,
-    closed BOOLEAN NOT NULL
+    closed INTEGER
 );
 
 CREATE TABLE poll_options (
