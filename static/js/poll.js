@@ -93,12 +93,8 @@ $(function() {
     // show / hide weights
     function toggle_weights() {
         if ($this.find(`#${WEIGHTS_TAG}`).is(":checked")) {
-            $this.find(".edit-button").hide();
-            $this.find(".delete-button").hide();
             $this.find(".weight").show();
         } else {
-            $this.find(".edit-button").show();
-            $this.find(".delete-button").show();
             $this.find(".weight").hide();
         }
     }
