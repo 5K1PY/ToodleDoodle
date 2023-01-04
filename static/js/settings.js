@@ -56,7 +56,7 @@ $(function() {
 
     // add shortcuts
     $this.keypress(function(e) {
-        if (e.target.tagName === 'INPUT' && e.target.type === 'text') {
+        if ((e.target.tagName === 'INPUT' && e.target.type === 'text') || e.target.tagName === 'TEXTAREA') {
             return;
         }
         var key = String.fromCharCode(e.keyCode || e.which);
