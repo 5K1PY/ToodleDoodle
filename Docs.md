@@ -34,7 +34,7 @@ in `static/js`):
 ## Database
 The project uses PostgreSQL database. In the
 database are stored following tables:
- - Polls - table of all polls
- - Poll_options - stores options for each poll
- - Poll_data - stores filled-in availabilty of
+ - `polls` - table of all polls
+ - `poll_options` - stores options for each poll
+ - `poll_data` - stores filled-in availability of
  users in particular poll
